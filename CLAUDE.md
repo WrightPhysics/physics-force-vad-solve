@@ -23,18 +23,18 @@ Live at **https://wrightphysics.org/physics-force-vad-solve/**
 Top to bottom:
 
 1. Title: **"Solving for Forces with your Force Vector Addition Diagram"**
-2. Scenario picker: buttons labeled **"Scenario N: name"**
+2. Scenario picker: ← / dropdown / → (same as the pumpkin sim). The original five are labeled **"Scenario N: name"**; the 4.9 ones are labeled **"BFPM 4.9 Apply The Model #N"** (`label` on the scenario; `name` keeps the book's title)
 3. Top row, three panels: **Written Description** | **Sketch** | **Interaction Diagram (ID)**
-4. **Angle Annotations** bar (applies to the FBD and VAD below)
-5. Bottom row, side by side: **Free Body Diagram (FBD)** (~40% width) | **Force Vector Addition Diagram (VAD)**
+4. Middle row, side by side: **Free Body Diagram (FBD)** (~40% width) | **Force Vector Addition Diagram (VAD)**
+5. **Angle Annotations** bar at the very bottom (applies to the FBD and VAD above it)
 
-Every representation panel except the VAD has a Hide/Show button (placeholder asks students to rebuild it). The force chips live in the VAD panel so hiding the FBD doesn't block the VAD. There are **no instruction notes** in the VAD panel and **no Check button** (both removed on purpose).
+Every representation panel except the VAD has a Hide/Show button (placeholder asks students to rebuild it). The force chips live in the VAD panel so hiding the FBD doesn't block the VAD. There are **no instruction notes** in the VAD panel (removed on purpose). The **Check my VAD** button (full width under the grid, report below it) was copied from the pumpkin sim: step 1 every force joined head to tail in one chain (`checkChain`, specific feedback for missing forces, head-to-head, tail-to-tail, forks, loose arrows, separate chains), step 2 the VAD ends where it started (all scenarios are balanced, so Δv = 0; the step 2 titles say "consistent with the motion", the messages say "scenario"). Red rings mark the problem; the report clears as soon as the VAD changes (`clearStaleCheck`, `placedSig`). Hints only, no "show me the answer".
 
 ## Physics and notation conventions
 
-- **All scenarios are balanced (BFPM).** Students haven't studied net force yet. Current scenarios: book on table, box at rest on 30° ramp, sign on two ropes (attached to walls), sled pulled at constant velocity, lawn mower pushed at constant velocity.
+- **All scenarios are balanced (BFPM).** Students haven't studied net force yet. Current scenarios: book on table, box at rest on 30° ramp, sign on two ropes (attached to walls), sled pulled at constant velocity, lawn mower pushed at constant velocity, then the 7 from the course book's 4.9 Apply the Model (BFPM): Pulling Horizontally, Pulling Up at an Angle, Pushing Down at an Angle, Block on Incline, Pulled Up Frictionless Incline, Traffic Light, Horizontal Spring. The 4.9 scenarios use the book's problem text verbatim.
 - **Type-On-By subscripts:** `F_gBE` = gravitational force on Box by Earth. Each scenario's key lists its object letters (e.g. "B = box, R = ramp, E = Earth"). Pushes by a person use `P` and "Y = you" (e.g. `F_PMY`).
-- g = 10 N/kg. VAD grid: **1 square = 10 N**.
+- g = 10 N/kg. VAD grid: **1 square = 10 N** by default; a scenario can set `sq` for a finer grid (BFPM #7, the spring, uses 5 N) and then `mag` values are in squares of that size. The VAD has a **Force (N) / Scaled length (cm)** toggle for the vector labels (1 square = 1 cm).
 - Masses are given in the written description, **not** on the sketch.
 
 ## VAD behavior (core pedagogy)

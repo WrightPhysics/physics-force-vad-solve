@@ -13,7 +13,7 @@
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
   --paper:#E9EEF2; --sheet:#FBFCFD; --panel:#FFFFFF; --ink:#1D2833; --muted:#5A6A77;
-  --rule:#C9D3DB; --grid:#E1E8EE; --good:#2B7A4B; --warn:#A3462F;
+  --rule:#C9D3DB; --grid:#E1E8EE; --good:#2B7A4B; --warn:#A3462F; --bad:#C62828;
   --vel:#5CB35A; --dv:#1F6B3F;
   --f0:#2F6FB5; --f1:#C0432F; --f2:#2B8A55; --f3:#8246B5; --f4:#A87908;
   --body:'Atkinson Hyperlegible',system-ui,-apple-system,'Segoe UI',sans-serif;
@@ -22,13 +22,13 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --paper:#11171D; --sheet:#171F27; --panel:#1B242D; --ink:#E4EBF1; --muted:#9BABB7;
-    --rule:#2E3B47; --grid:#222D37; --good:#6CCB95; --warn:#F08C74;
+    --rule:#2E3B47; --grid:#222D37; --good:#6CCB95; --warn:#F08C74; --bad:#F2766B;
     --vel:#7FD07A; --dv:#4FA36A; --f0:#72A9EA; --f1:#EF7B67; --f2:#5FC68D; --f3:#B88BE6; --f4:#E3B343;
   }
 }
 :root[data-theme="dark"]{
   --paper:#11171D; --sheet:#171F27; --panel:#1B242D; --ink:#E4EBF1; --muted:#9BABB7;
-  --rule:#2E3B47; --grid:#222D37; --good:#6CCB95; --warn:#F08C74;
+  --rule:#2E3B47; --grid:#222D37; --good:#6CCB95; --warn:#F08C74; --bad:#F2766B;
   --vel:#7FD07A; --dv:#4FA36A; --f0:#72A9EA; --f1:#EF7B67; --f2:#5FC68D; --f3:#B88BE6; --f4:#E3B343;
 }
 *,*::before,*::after{box-sizing:inherit}
@@ -41,9 +41,12 @@ h2{font-size:1.05rem;margin:0 0 10px}
 .rules li{max-width:30ch}
 .rules strong{color:var(--ink)}
 .rules li.lock strong{border-bottom:3px double var(--ink)}
-.scn-row{margin:0 0 16px}
-.scn-row .scns{flex-direction:row;flex-wrap:wrap;gap:6px}
-.scn-row .scn{width:auto;background:var(--panel);border-color:var(--rule)}
+.scn-row{display:flex;align-items:stretch;gap:8px;margin:0 0 16px;max-width:900px}
+.scn-row select{flex:1;min-width:0;font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--ink);border-radius:7px;padding:8px 10px;cursor:pointer;text-overflow:ellipsis}
+.scn-row select:focus-visible{outline:3px solid var(--f0);outline-offset:2px}
+.nav-btn{flex:none;width:44px;font:inherit;font-size:1.25rem;line-height:1;color:var(--ink);background:var(--panel);border:1px solid var(--rule);border-radius:7px;cursor:pointer}
+.nav-btn:hover:not(:disabled){background:var(--grid)}
+.nav-btn:disabled{opacity:.35;cursor:default}
 .reps{display:grid;grid-template-columns:minmax(200px,.7fr) minmax(260px,1fr) minmax(300px,1.15fr);gap:16px;margin-bottom:16px;align-items:start}
 @media (max-width:1000px){.reps{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .work{display:grid;grid-template-columns:minmax(320px,1fr) minmax(0,1.35fr);gap:16px;align-items:stretch}
@@ -77,11 +80,6 @@ h2{font-size:1.05rem;margin:0 0 10px}
 @media (prefers-reduced-motion:reduce){[data-f]{transition:none}}
 .panel{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px}
 .side{display:flex;flex-direction:column;gap:16px}
-.scns{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
-.scn{width:100%;text-align:left;font:inherit;color:var(--ink);background:transparent;border:1px solid transparent;border-radius:7px;padding:7px 10px;cursor:pointer;display:flex;justify-content:space-between;gap:10px}
-.scn:hover{background:var(--grid)}
-.scn[aria-pressed="true"]{border-color:var(--ink);background:var(--sheet)}
-.scn .model{color:var(--muted);font-size:.85rem}
 .desc{margin:0 0 4px;max-width:60ch}
 .key{margin:0;color:var(--muted);font-size:.9rem}
 #fbd{display:block;width:100%;max-width:560px;margin:4px auto 0;aspect-ratio:1}
@@ -95,12 +93,16 @@ h2{font-size:1.05rem;margin:0 0 10px}
 .chip .sw{width:18px;height:5px;border-radius:3px;flex:none}
 .chip .cm{margin-left:auto;color:var(--muted);font-size:.88rem}
 .flbl{font-family:var(--math);font-size:1.08em}
+.force-key{list-style:none;margin:4px 0 0;padding:10px 0 0;border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:4px}
+.force-key li{line-height:1.4}
+.force-key .flbl{font-weight:700}
 .flbl sub{font-size:.68em}
 .main-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
 .main-head h2{margin:0}
 .tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .tools label{display:flex;gap:6px;align-items:center;cursor:pointer;font-size:.95rem}
-.anglebar{display:flex;flex-wrap:wrap;gap:10px 36px;margin-bottom:20px;padding:12px 16px}
+.tools .units{display:flex;gap:12px;border:0;padding:0;margin:0;min-width:0}
+.anglebar{display:flex;flex-wrap:wrap;gap:10px 36px;margin-top:16px;padding:12px 16px}
 .anglebar fieldset{border:0;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px}
 .anglebar legend{float:left;font-weight:700;margin-right:6px;padding:0}
 .anglebar label{display:flex;gap:6px;align-items:center;cursor:pointer}
@@ -130,6 +132,18 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--f0);outline-off
 .lbl.ok{fill:var(--ink)}
 .snap{fill:none;stroke:var(--ink);stroke-width:2}
 .closed{fill:none;stroke:var(--good);stroke-width:3}
+.bad-ring{fill:none;stroke:var(--bad);stroke-width:3;opacity:.85}
+button.btn.btn-check{display:block;width:100%;margin-top:12px;padding:12px 14px;font-size:1.1rem;background:var(--ink);color:var(--panel);border-color:var(--ink)}
+button.btn.btn-check:hover{filter:brightness(1.25)}
+#check{margin-top:12px;border:1px solid var(--rule);border-radius:8px;background:var(--sheet);padding:10px 14px}
+#check ol{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+#check li{display:grid;grid-template-columns:24px 1fr;gap:6px;align-items:start}
+#check .mk{font-weight:700;font-size:1.1rem;line-height:1.35;text-align:center}
+#check .ok .mk{color:var(--good)} #check .no .mk{color:var(--bad)} #check .maybe .mk{color:var(--warn)} #check .wait .mk{color:var(--muted)}
+#check .wait{color:var(--muted)}
+#check .ttl{font-weight:700;display:block}
+#check .done{margin-top:10px;padding-top:8px;border-top:1px solid var(--rule);font-weight:700;display:flex;align-items:center;gap:8px}
+#check .done.good{color:var(--good)}
 .scale{font-family:var(--body);font-size:12px;fill:var(--muted)}
 #hint{position:absolute;left:12px;right:12px;top:12px;margin:0;background:var(--ink);color:var(--panel);padding:8px 12px;border-radius:7px;font-size:.95rem;opacity:0;pointer-events:none;transition:opacity .15s}
 #hint.show{opacity:1}
@@ -153,7 +167,11 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--f0);outline-off
 <div class="wrap">
   <h1>Solving for Forces with your Force Vector Addition Diagram</h1>
 
-  <nav class="scn-row" aria-label="Scenario"><ul class="scns" id="scns"></ul></nav>
+  <nav class="scn-row" aria-label="Scenario">
+    <button class="nav-btn" id="prev" aria-label="Previous scenario" title="Previous scenario">←</button>
+    <select id="scns" aria-label="Choose a scenario"></select>
+    <button class="nav-btn" id="next" aria-label="Next scenario" title="Next scenario">→</button>
+  </nav>
 
   <div class="reps">
     <section class="panel rep" data-rep="desc" aria-labelledby="desc-h">
@@ -179,6 +197,38 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--f0);outline-off
     </section>
   </div>
 
+  <div class="work">
+    <section class="panel rep" data-rep="fbd" aria-labelledby="fbd-h">
+      <div class="rep-head"><h2 id="fbd-h">Free Body Diagram (FBD)</h2><button class="hide-btn" aria-pressed="false">Hide</button></div>
+      <div class="rep-body">
+        <svg id="fbd" viewBox="-200 -200 400 400" role="group" aria-label="Free body diagram"></svg>
+        <p class="note">Click a force to bring it to the vector addition diagram. Until then its arrow shows direction only; once it’s in the VAD, its length here matches the VAD.</p>
+        <ul class="force-key" id="force-key" aria-label="What each force label means"></ul>
+      </div>
+      <p class="rep-hidden" hidden>Hidden. Draw it from the other representations.</p>
+    </section>
+    <div class="vad-col">
+    <section class="panel" aria-labelledby="vad-h">
+      <div class="main-head">
+        <h2 id="vad-h">Force Vector Addition Diagram (VAD)</h2>
+        <div class="tools">
+          <label><input type="checkbox" id="rails"> Show lines of action</label>
+          <fieldset class="units" aria-label="Label vectors with"><label><input type="radio" name="vu" value="N" checked> Force (N)</label><label><input type="radio" name="vu" value="cm"> Scaled length (cm)</label></fieldset>
+          <button class="btn" id="restart">Start over</button>
+        </div>
+      </div>
+      <p id="msg" aria-live="polite"></p>
+      <ul class="chips" id="chips" aria-label="Forces: click to add or remove"></ul>
+      <div class="canvas-wrap">
+        <svg id="vad" aria-label="Vector addition diagram workspace"></svg>
+        <p id="hint" role="status" aria-live="polite"></p>
+      </div>
+      <button class="btn btn-check" id="check-btn">Check my VAD</button>
+      <div id="check" aria-live="polite" hidden></div>
+    </section>
+    </div>
+  </div>
+
   <div class="anglebar panel">
     <fieldset>
       <legend>Angle Annotations</legend>
@@ -192,38 +242,10 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--f0);outline-off
       <label><input type="checkbox" data-on="angVAD" checked> Vector addition diagram</label>
     </fieldset>
   </div>
-
-  <div class="work">
-    <section class="panel rep" data-rep="fbd" aria-labelledby="fbd-h">
-      <div class="rep-head"><h2 id="fbd-h">Free Body Diagram (FBD)</h2><button class="hide-btn" aria-pressed="false">Hide</button></div>
-      <div class="rep-body">
-        <svg id="fbd" viewBox="-200 -200 400 400" role="group" aria-label="Free body diagram"></svg>
-        <p class="note">Click a force to bring it to the vector addition diagram. Until then its arrow shows direction only; once it’s in the VAD, its length here matches the VAD.</p>
-      </div>
-      <p class="rep-hidden" hidden>Hidden. Draw it from the other representations.</p>
-    </section>
-    <div class="vad-col">
-    <section class="panel" aria-labelledby="vad-h">
-      <div class="main-head">
-        <h2 id="vad-h">Force Vector Addition Diagram (VAD)</h2>
-        <div class="tools">
-          <label><input type="checkbox" id="rails"> Show lines of action</label>
-          <button class="btn" id="restart">Start over</button>
-        </div>
-      </div>
-      <p id="msg" aria-live="polite"></p>
-      <ul class="chips" id="chips" aria-label="Forces: click to add or remove"></ul>
-      <div class="canvas-wrap">
-        <svg id="vad" aria-label="Vector addition diagram workspace"></svg>
-        <p id="hint" role="status" aria-live="polite"></p>
-      </div>
-    </section>
-    </div>
-  </div>
 </div>
 
 <script>
-const UNIT_N = 10; // newtons per grid square
+const UNIT_N = 10; // default newtons per grid square; a scenario can set `sq` for a finer grid
 const CLOSE_TOL = 0.25; // grid units: a VAD this close to its start counts as ending where it started
 const SCN = [
   { name:"Book at rest on a table", motion:"is at rest",
@@ -272,13 +294,81 @@ const SCN = [
       ints:[{a:"Y",b:"M",type:"compression",f:1,bend:-22},
             {a:"G",b:"M",type:"compression",f:2,bend:22},{a:"G",b:"M",type:"shear",f:3,bend:-22},
             {a:"G",b:"Y",type:"compression",bend:-22},{a:"G",b:"Y",type:"shear",bend:22},
-            {a:"E",b:"M",type:"field",f:0,bend:55},{a:"E",b:"Y",type:"field",bend:-55},{a:"E",b:"G",type:"field",bend:0}] } }
+            {a:"E",b:"M",type:"field",f:0,bend:55},{a:"E",b:"Y",type:"field",bend:-55},{a:"E",b:"G",type:"field",bend:0}] } },
+  // ---- 4.9 Apply the Model: Balanced Forces Particle Model (BFPM) ----
+  { name:"Pulling Horizontally", label:"BFPM 4.9 Apply The Model #1", motion:"moves at constant velocity",
+    text:"A box of mass 8.0 kg is pulled across the floor at a constant velocity by a horizontal rope. The tension in the rope is measured to be 20.0 N.",
+    key:"B = box, R = rope, G = ground, E = Earth",
+    forces:[{t:"g",on:"B",by:"E",ang:270,mag:8},{t:"T",on:"B",by:"R",ang:0,mag:2},{t:"N",on:"B",by:"G",ang:90},{t:"f",on:"B",by:"G",ang:180}],
+    target:[0,0],
+    id:{ sys:"B",
+      objs:{ B:{name:"Box (B)",x:70,y:85}, R:{name:"Rope (R)",x:250,y:50}, G:{name:"Ground (G)",x:180,y:165}, E:{name:"Earth (E)",x:180,y:248} },
+      ints:[{a:"R",b:"B",type:"stretch",f:1,bend:16},
+            {a:"G",b:"B",type:"compression",f:2,bend:-22},{a:"G",b:"B",type:"shear",f:3,bend:22},
+            {a:"E",b:"B",type:"field",f:0,bend:-55},{a:"E",b:"G",type:"field",bend:0}] } },
+  { name:"Pulling Up at an Angle", label:"BFPM 4.9 Apply The Model #2", motion:"moves at constant velocity",
+    text:"A student pulls a 12 kg crate at constant velocity with a rope making a 25° angle above the horizontal. The tension is 30 N.",
+    key:"C = crate, R = rope, S = student, G = ground, E = Earth",
+    forces:[{t:"g",on:"C",by:"E",ang:270,mag:12},{t:"T",on:"C",by:"R",ang:25,mag:3},{t:"N",on:"C",by:"G",ang:90},{t:"f",on:"C",by:"G",ang:180}],
+    target:[0,0],
+    id:{ sys:"C",
+      objs:{ C:{name:"Crate (C)",x:70,y:85}, R:{name:"Rope (R)",x:180,y:35}, S:{name:"Student (S)",x:292,y:85}, G:{name:"Ground (G)",x:180,y:165}, E:{name:"Earth (E)",x:180,y:248} },
+      ints:[{a:"R",b:"C",type:"stretch",f:1,bend:16},{a:"R",b:"S",type:"stretch",bend:-16},
+            {a:"G",b:"C",type:"compression",f:2,bend:-22},{a:"G",b:"C",type:"shear",f:3,bend:22},
+            {a:"G",b:"S",type:"compression",bend:22},{a:"G",b:"S",type:"shear",bend:-22},
+            {a:"E",b:"C",type:"field",f:0,bend:-55},{a:"E",b:"S",type:"field",bend:55},{a:"E",b:"G",type:"field",bend:0}] } },
+  { name:"Pushing Down at an Angle", label:"BFPM 4.9 Apply The Model #3", motion:"moves at constant velocity",
+    text:"A student pushes on a 10 kg box across the floor at constant velocity by applying a 40.0 N force directed 30° below the horizontal.",
+    key:"B = box, S = student, G = ground, E = Earth",
+    forces:[{t:"g",on:"B",by:"E",ang:270,mag:10},{t:"P",on:"B",by:"S",ang:330,mag:4},{t:"N",on:"B",by:"G",ang:90},{t:"f",on:"B",by:"G",ang:180}],
+    target:[0,0],
+    id:{ sys:"B",
+      objs:{ S:{name:"Student (S)",x:70,y:70}, B:{name:"Box (B)",x:290,y:70}, G:{name:"Ground (G)",x:180,y:165}, E:{name:"Earth (E)",x:180,y:248} },
+      ints:[{a:"S",b:"B",type:"compression",f:1,bend:-22},
+            {a:"G",b:"B",type:"compression",f:2,bend:22},{a:"G",b:"B",type:"shear",f:3,bend:-22},
+            {a:"G",b:"S",type:"compression",bend:-22},{a:"G",b:"S",type:"shear",bend:22},
+            {a:"E",b:"B",type:"field",f:0,bend:55},{a:"E",b:"S",type:"field",bend:-55},{a:"E",b:"G",type:"field",bend:0}] } },
+  { name:"Block on Incline", label:"BFPM 4.9 Apply The Model #4", motion:"moves at constant velocity",
+    text:"A 5.0 kg block slides down a 20° incline at constant velocity.",
+    key:"B = block, I = incline, E = Earth",
+    forces:[{t:"g",on:"B",by:"E",ang:270,mag:5},{t:"N",on:"B",by:"I",ang:110},{t:"f",on:"B",by:"I",ang:20}],
+    target:[0,0],
+    id:{ sys:"B",
+      objs:{ B:{name:"Block (B)",x:95,y:65}, I:{name:"Incline (I)",x:265,y:120}, E:{name:"Earth (E)",x:115,y:225} },
+      ints:[{a:"I",b:"B",type:"compression",f:1,bend:-34},{a:"I",b:"B",type:"shear",f:2,bend:34},{a:"E",b:"B",type:"field",f:0,bend:-30},{a:"E",b:"I",type:"field",bend:-20}] } },
+  { name:"Pulled Up Frictionless Incline", label:"BFPM 4.9 Apply The Model #5", sq:5, motion:"moves at constant velocity",
+    text:"A 3.0 kg cart is on a frictionless 15° incline. A rope pulls it up the incline at constant velocity.",
+    key:"C = cart, R = rope, I = incline, E = Earth",
+    forces:[{t:"g",on:"C",by:"E",ang:270,mag:6},{t:"N",on:"C",by:"I",ang:105},{t:"T",on:"C",by:"R",ang:15}],
+    target:[0,0],
+    id:{ sys:"C",
+      objs:{ C:{name:"Cart (C)",x:80,y:95}, R:{name:"Rope (R)",x:270,y:35}, I:{name:"Incline (I)",x:275,y:165}, E:{name:"Earth (E)",x:130,y:240} },
+      ints:[{a:"R",b:"C",type:"stretch",f:2,bend:-18},{a:"I",b:"C",type:"compression",f:1,bend:-20},{a:"E",b:"C",type:"field",f:0,bend:-30},{a:"E",b:"I",type:"field",bend:-20}] } },
+  { name:"Traffic Light", label:"BFPM 4.9 Apply The Model #6", motion:"is at rest",
+    text:"A traffic light of mass 6.1 kg hangs at rest from two cables that make angles of 35° and 55° with the horizontal.",
+    key:"L = traffic light, A = left cable, B = right cable, S = supports, E = Earth",
+    forces:[{t:"g",on:"L",by:"E",ang:270,mag:6.1},{t:"T",on:"L",by:"A",ang:145},{t:"T",on:"L",by:"B",ang:55}],
+    target:[0,0],
+    id:{ sys:"L",
+      objs:{ S:{name:"Supports (S)",x:180,y:32}, A:{name:"Left cable (A)",x:62,y:125}, E:{name:"Earth (E)",x:180,y:125}, B:{name:"Right cable (B)",x:298,y:125}, L:{name:"Light (L)",x:180,y:222} },
+      ints:[{a:"A",b:"L",type:"stretch",f:1,bend:-22},{a:"B",b:"L",type:"stretch",f:2,bend:22},{a:"S",b:"A",type:"stretch",bend:22},{a:"S",b:"B",type:"stretch",bend:-22},
+            {a:"E",b:"L",type:"field",f:0,bend:0},{a:"E",b:"S",type:"field",bend:0}] } },
+  { name:"Horizontal Spring", label:"BFPM 4.9 Apply The Model #7", sq:5, motion:"moves at constant velocity",
+    text:"A horizontal spring (spring constant 150 N/m) pulls on a 2.5 kg block that moves at constant velocity across a rough surface. The spring is stretched 0.04 m.",
+    key:"B = block, S = spring, G = ground, E = Earth",
+    forces:[{t:"g",on:"B",by:"E",ang:270,mag:5},{t:"T",on:"B",by:"S",ang:0,mag:1.2},{t:"N",on:"B",by:"G",ang:90},{t:"f",on:"B",by:"G",ang:180}],
+    target:[0,0],
+    id:{ sys:"B",
+      objs:{ B:{name:"Block (B)",x:70,y:85}, S:{name:"Spring (S)",x:250,y:50}, G:{name:"Ground (G)",x:180,y:165}, E:{name:"Earth (E)",x:180,y:248} },
+      ints:[{a:"S",b:"B",type:"stretch",f:1,bend:16},
+            {a:"G",b:"B",type:"compression",f:2,bend:-22},{a:"G",b:"B",type:"shear",f:3,bend:22},
+            {a:"E",b:"B",type:"field",f:0,bend:-55},{a:"E",b:"G",type:"field",bend:0}] } }
 ];
 
 const $ = s => document.querySelector(s);
 const vad = $('#vad'), fbd = $('#fbd');
 let si = 1;
-const st = { placed:new Map(), rails:false, ang:{ h:false, v:false, b:false }, angFBD:true, angVAD:true, history:[] };
+const st = { placed:new Map(), rails:false, ang:{ h:false, v:false, b:false }, angFBD:true, angVAD:true, unitsCm:false, check:null, history:[] };
 let drag = null, snapPt = null, S = 40, CX = 0, CY = 0, lastTap = {}, hintTimer = null;
 
 const sc = () => SCN[si];
@@ -289,7 +379,9 @@ const sub = f => f.t + f.on + f.by;
 const tipOf = p => { const u = dir(F(p.id)); return [p.x+u[0]*p.len, p.y+u[1]*p.len]; };
 const P = (x,y) => [CX + x*S, CY - y*S];
 const dist = (a,b) => Math.hypot(a[0]-b[0], a[1]-b[1]);
-const fmtN = u => Math.round(u*UNIT_N) + ' N';
+const unitN = () => sc().sq || UNIT_N;
+const fmtN = u => Math.round(u*unitN()) + ' N';
+const fmtCm = u => (Math.round(u*10)/10) + ' cm';   // 1 grid square = 1 cm on the scaled VAD
 const angStr = v => Math.round((Math.atan2(v[1],v[0])*180/Math.PI + 360) % 360) + '°';
 const r1 = n => n.toFixed(1);
 
@@ -524,6 +616,18 @@ function person(x, ground, hand){ // stick figure, tall enough that the hand sit
   return `<circle class="sk sk-fill" cx="${x}" cy="${ground-127}" r="9"/>`+
     `<path class="sk" d="M${x},${ground-118}V${ground-62} M${x},${ground-62}L${x-10},${ground} M${x},${ground-62}L${x+10},${ground} M${x},${ground-108}L${hand[0]},${hand[1]}"/>`;
 }
+// Motion map along a slope: dots with equal velocity arrows, centred a height h above surface point s.
+// e = unit direction of travel; the row sits on the upward side of the line of travel.
+function slopeMap(s, e, h, n=3, spacing=46, len=32){
+  const nm = e[0] > 0 ? [e[1], -e[0]] : [-e[1], e[0]], c = [s[0]+nm[0]*h, s[1]+nm[1]*h], tot = (n-1)*spacing + len;
+  let out = '';
+  for (let k = 0; k < n; k++) {
+    const o = k*spacing - tot/2, x = c[0]+e[0]*o, y = c[1]+e[1]*o;
+    out += arrow(x, y, x+e[0]*len, y+e[1]*len, 'var(--vel)', 2.4) + `<circle cx="${r1(x)}" cy="${r1(y)}" r="3.4" fill="var(--ink)"/>` +
+      mathText(x + e[0]*len/2 + nm[0]*10, y + e[1]*len/2 + nm[1]*10, [V]);
+  }
+  return out + mathText(c[0]+nm[0]*32, c[1]+nm[1]*32, [{t:'Δ'}, V, {t:' = 0'}]);
+}
 const SKETCH = [
   // Book at rest on a table
   () => hatch(30,290,190) +
@@ -572,7 +676,78 @@ const SKETCH = [
     motionMap(196, 58, 3, 40, 28) +
     skT(230,157,'Mower (M)') +
     skT(116,62,'20 N push','sk-note','start') + skT(70,44,'You (Y)','sk-lbl','end') +
-    skT(14,196,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end')
+    skT(14,196,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end'),
+  // Pulling Horizontally
+  () => hatch(10,310,172) +
+    `<rect class="sk sk-fill" x="56" y="132" width="76" height="40" rx="2"/>`+
+    `<path class="sk" d="M132,152H178 M266,152H300"/>`+
+    `<circle class="sk" cx="182" cy="152" r="3.5"/><circle class="sk" cx="262" cy="152" r="3.5"/>`+
+    `<rect class="sk sk-fill" x="186" y="143" width="72" height="18" rx="3"/>`+
+    `<path class="sk" style="stroke-width:1.2" d="M194,143v6M201,143v4M208,143v6M215,143v4M222,143v6M229,143v4M236,143v6M243,143v4M250,143v6"/>`+
+    `<path style="stroke:var(--f1);stroke-width:2;fill:none" d="M226,143v18"/>`+
+    sysBox(49, 125, 90, 47) +
+    motionMap(46, 76) +
+    skT(94,157,'Box (B)') + skT(222,128,'Spring scale') + skT(291,142,'20.0 N','sk-note') + skT(291,167,'Rope (R)') +
+    skT(14,192,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end'),
+  // Pulling Up at an Angle
+  () => hatch(10,310,172) +
+    `<rect class="sk sk-fill" x="50" y="126" width="64" height="46" rx="2"/>`+
+    `<path class="sk" d="M114,149L209,105"/>` + person(222, 172, [209,105]) +
+    sysBox(43, 119, 78, 53) +
+    `<path class="sk-ref" d="M114,149H162"/>` + skArc(114,149,36,-25,0,'25°',52) +
+    motionMap(26, 76) +
+    skT(82,153,'Crate (C)') + skT(158,116,'Rope (R)','sk-lbl','end') +
+    skT(196,98,'30 N','sk-note','end') + skT(236,122,'Student (S)','sk-lbl','start') +
+    skT(14,192,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end'),
+  // Pushing Down at an Angle
+  () => hatch(10,310,172) +
+    `<rect class="sk sk-fill" x="194" y="128" width="70" height="44" rx="2"/>`+
+    `<path class="sk" style="stroke-width:3" d="M104,88L194,140"/>` + person(84, 172, [104,88]) +
+    sysBox(187, 121, 84, 51) +
+    `<path class="sk-ref" d="M104,88H152"/>` + skArc(104,88,40,0,30,'30°',64,7) +
+    motionMap(196, 58, 3, 40, 28) +
+    skT(229,154,'Box (B)') +
+    skT(116,62,'40.0 N push','sk-note','start') + skT(70,40,'Student (S)','sk-lbl','end') +
+    skT(14,192,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end'),
+  // Block sliding down a 20° incline at constant velocity
+  () => hatch(20,300,190) +
+    `<path class="sk sk-fill" d="M30,190L280,190L280,99Z"/>`+
+    `<g transform="translate(167,140) rotate(-20)"><rect class="sk sk-fill" x="-22" y="-28" width="44" height="28" rx="2"/>`+
+    `<rect class="sk-sys" x="-31" y="-37" width="62" height="37" rx="7"/></g>`+
+    skArc(30,190,40,-20,0,'20°',56) +
+    slopeMap([167,140], [-Math.cos(Math.PI/9), Math.sin(Math.PI/9)], 62) +
+    skT(118,132,'Block (B)','sk-lbl','end') + skT(232,180,'Incline (I)') + skT(300,212,'Earth (E)','sk-lbl','end'),
+  // Cart pulled up a frictionless 15° incline at constant velocity
+  () => hatch(20,300,190) +
+    `<path class="sk sk-fill" d="M30,190L280,190L280,123Z"/>`+
+    `<g transform="translate(150,157.8) rotate(-15)">`+
+    `<rect class="sk sk-fill" x="-26" y="-24" width="52" height="16" rx="2"/>`+
+    `<circle class="sk sk-fill" cx="-16" cy="-5" r="5"/><circle class="sk sk-fill" cx="16" cy="-5" r="5"/>`+
+    `<path class="sk" d="M26,-16H110"/>`+
+    `<rect class="sk-sys" x="-34" y="-33" width="68" height="33" rx="7"/></g>`+
+    skArc(30,190,40,-15,0,'15°',56) +
+    slopeMap([150,157.8], [Math.cos(Math.PI/12), -Math.sin(Math.PI/12)], 74) +
+    skT(102,146,'Cart (C)','sk-lbl','end') + skT(210,108,'Rope (R)') + skT(222,178,'Incline (I)') + skT(300,212,'Earth (E)','sk-lbl','end'),
+  // Traffic light hanging from two cables
+  () => vhatch(22,20,206,-1) + vhatch(258,20,206,1) +
+    `<path class="sk" d="M152,150L22,59 M188,150L258,50"/>`+
+    `<rect class="sk sk-fill" x="152" y="150" width="36" height="50" rx="4"/>`+
+    `<circle class="sk" cx="170" cy="162" r="5"/><circle class="sk" cx="170" cy="175" r="5"/><circle class="sk" cx="170" cy="188" r="5"/>`+
+    sysBox(143, 141, 54, 68) +
+    `<path class="sk-ref" d="M152,150H104 M188,150H236"/>`+
+    skArc(152,150,34,180,215,'35°',48) + skArc(188,150,34,-55,0,'55°',48) +
+    skT(137,178,'Light (L)','sk-lbl','end') +
+    skT(95,70,'Left cable (A)') + skT(214,92,'Right cable (B)','sk-lbl','end') +
+    skT(30,214,'Supports (S)','sk-lbl','start') + skT(290,214,'Earth (E)','sk-lbl','end') +
+    restMap(170, 40),
+  // Horizontal spring pulling a block at constant velocity
+  () => hatch(10,310,172) +
+    `<rect class="sk sk-fill" x="56" y="132" width="76" height="40" rx="2"/>`+
+    `<path class="sk" d="M132.0,152.0L140.0,152.0L140.0,152.0L140.5,154.1L141.3,156.0L142.2,157.7L143.3,158.9L144.6,159.7L145.9,160.0L147.2,159.7L148.5,158.9L149.6,157.7L150.6,156.0L151.3,154.1L151.8,152.0L152.1,149.9L152.1,148.0L152.0,146.3L151.6,145.1L151.1,144.3L150.6,144.0L150.0,144.3L149.5,145.1L149.2,146.3L149.0,148.0L149.0,149.9L149.3,152.0L149.8,154.1L150.6,156.0L151.5,157.7L152.6,158.9L153.9,159.7L155.2,160.0L156.5,159.7L157.8,158.9L158.9,157.7L159.9,156.0L160.6,154.1L161.1,152.0L161.4,149.9L161.4,148.0L161.3,146.3L160.9,145.1L160.4,144.3L159.9,144.0L159.3,144.3L158.8,145.1L158.5,146.3L158.3,148.0L158.3,149.9L158.6,152.0L159.1,154.1L159.9,156.0L160.8,157.7L161.9,158.9L163.2,159.7L164.5,160.0L165.8,159.7L167.1,158.9L168.2,157.7L169.2,156.0L169.9,154.1L170.4,152.0L170.7,149.9L170.7,148.0L170.6,146.3L170.2,145.1L169.7,144.3L169.2,144.0L168.6,144.3L168.1,145.1L167.8,146.3L167.6,148.0L167.6,149.9L167.9,152.0L168.4,154.1L169.2,156.0L170.1,157.7L171.2,158.9L172.5,159.7L173.8,160.0L175.1,159.7L176.4,158.9L177.5,157.7L178.5,156.0L179.2,154.1L179.8,152.0L180.0,149.9L180.0,148.0L179.9,146.3L179.5,145.1L179.0,144.3L178.5,144.0L177.9,144.3L177.5,145.1L177.1,146.3L176.9,148.0L176.9,149.9L177.2,152.0L177.7,154.1L178.5,156.0L179.4,157.7L180.5,158.9L181.8,159.7L183.1,160.0L184.4,159.7L185.7,158.9L186.8,157.7L187.8,156.0L188.5,154.1L189.0,152.0L189.3,149.9L189.3,148.0L189.2,146.3L188.8,145.1L188.3,144.3L187.8,144.0L187.2,144.3L186.8,145.1L186.4,146.3L186.2,148.0L186.2,149.9L186.5,152.0L187.0,154.1L187.8,156.0L188.7,157.7L189.8,158.9L191.1,159.7L192.4,160.0L193.7,159.7L195.0,158.9L196.1,157.7L197.1,156.0L197.8,154.1L198.3,152.0L198.6,149.9L198.6,148.0L198.5,146.3L198.1,145.1L197.6,144.3L197.1,144.0L196.5,144.3L196.0,145.1L195.7,146.3L195.5,148.0L195.5,149.9L195.8,152.0L196.3,154.1L197.1,156.0L198.0,157.7L199.1,158.9L200.4,159.7L201.7,160.0L203.0,159.7L204.3,158.9L205.4,157.7L206.4,156.0L207.1,154.1L207.7,152.0L207.9,149.9L207.9,148.0L207.8,146.3L207.4,145.1L206.9,144.3L206.4,144.0L205.8,144.3L205.3,145.1L205.0,146.3L204.8,148.0L204.8,149.9L205.1,152.0L205.6,154.1L206.4,156.0L207.3,157.7L208.5,158.9L209.7,159.7L211.0,160.0L212.3,159.7L213.6,158.9L214.7,157.7L215.7,156.0L216.4,154.1L216.9,152.0L217.2,149.9L217.2,148.0L217.1,146.3L216.7,145.1L216.2,144.3L215.7,144.0L215.1,144.3L214.7,145.1L214.3,146.3L214.1,148.0L214.1,149.9L214.4,152.0L214.9,154.1L215.7,156.0L216.6,157.7L217.7,158.9L219.0,159.7L220.3,160.0L221.6,159.7L222.9,158.9L224.0,157.7L225.0,156.0L225.7,154.1L226.2,152.0L226.5,149.9L226.5,148.0L226.4,146.3L226.0,145.1L225.5,144.3L225.0,144.0L224.4,144.3L224.0,145.1L223.6,146.3L223.4,148.0L223.4,149.9L223.7,152.0L231.7,152.0"/><circle class="sk" cx="238.7" cy="152" r="7"/>`+
+    sysBox(49, 125, 90, 47) +
+    motionMap(46, 76) +
+    skT(94,157,'Block (B)') + skT(185,132,'Spring (S)') + skT(190,114,'k = 150 N/m, stretched 0.04 m','sk-note') +
+    skT(14,192,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end')
 ];
 function renderSketch(){ $('#sketch').innerHTML = SKETCH[si](); }
 
@@ -662,8 +837,10 @@ document.querySelectorAll('.rep .hide-btn').forEach(btn => btn.addEventListener(
 }));
 
 function renderScenarios(){
-  $('#scns').innerHTML = SCN.map((s,i) =>
-    `<li><button class="scn" data-s="${i}" aria-pressed="${i===si}"><span>Scenario ${i+1}: ${s.name}</span></button></li>`).join('');
+  const pick = $('#scns');
+  if (!pick.options.length) pick.innerHTML = SCN.map((s,i) => `<option value="${i}">${s.label ?? `Scenario ${i+1}: ${s.name}`}</option>`).join('');
+  pick.value = si;
+  $('#prev').disabled = si === 0; $('#next').disabled = si === SCN.length - 1;
   $('#desc').textContent = sc().text;
   $('#key').textContent = sc().key;
 }
@@ -716,7 +893,9 @@ function renderChips(){
 function renderVAD(){
   const W = vad.clientWidth || 600, H = vad.clientHeight || 420;
   vad.setAttribute('viewBox', `0 0 ${W} ${H}`);
-  S = Math.max(24, Math.min(W,H)/12); CX = W/2; CY = H/2;
+  // Zoom out when a force is long, so the whole closed polygon fits (never zoom in past 12 squares across).
+  const rmax = Math.max(0, ...sc().forces.map((f,i) => known(f) ? f.mag : Math.abs(solve()[i] || 0)));
+  S = Math.max(14, Math.min(W,H)/Math.max(12, rmax + 4)); CX = W/2; CY = H/2;
   let d = '';
   for (let x = CX % S; x <= W; x += S) d += `M${r1(x)} 0V${H}`;
   for (let y = CY % S; y <= H; y += S) d += `M0 ${r1(y)}H${W}`;
@@ -788,7 +967,6 @@ function renderVAD(){
     const { p, t, tp, col, k } = g;
     h += `<g class="vec" data-id="${p.id}" data-f="${p.id}">`+
       `<line class="hit" data-part="body" x1="${r1(t[0])}" y1="${r1(t[1])}" x2="${r1(tp[0])}" y2="${r1(tp[1])}"/>`+
-      `<circle class="vis" cx="${r1(t[0])}" cy="${r1(t[1])}" r="3.5" fill="${col}"/>`+
       (k ? '' : `<circle class="ring vis" cx="${r1(tp[0])}" cy="${r1(tp[1])}" r="14" style="stroke:${col}"/>`)+
       `<g class="vis">${arrow(t[0],t[1],tp[0],tp[1],col,4)}</g>`+
       `<circle class="handle ${k?'locked':'free'}" data-part="handle" cx="${r1(tp[0])}" cy="${r1(tp[1])}" r="18"/>`+
@@ -807,7 +985,8 @@ function renderVAD(){
   }
   am.labels.forEach(a => { lh += angText(place(a.cands, a.w, a.hh), a); });
   [...geo].sort((a,b) => b.p.len - a.p.len).forEach(g => {
-    const magTxt = g.k ? fmtN(g.f.mag) : '≈ ' + fmtN(g.p.len);
+    const fmt = st.unitsCm ? fmtCm : fmtN;
+    const magTxt = g.k ? fmt(g.f.mag) : '≈ ' + fmt(g.p.len);
     const wLab = tw(`italic 500 18px ${MATH}`, 'F') + tw(`500 12.24px ${MATH}`, sub(g.f));
     const w = Math.max(wLab, tw(`12px ${BODY}`, magTxt)) + 8, hh = 38;
     const r = place(besideSegment(g.t, g.tp, w, hh), w, hh);
@@ -816,8 +995,9 @@ function renderVAD(){
       `<text class="mag" x="${r1(cx)}" y="${r1(r.y1-5)}" text-anchor="middle">${magTxt}</text></g>`;
   });
   h += lh;
+  if (st.check && st.check.sig === placedSig()) st.check.pts.forEach(q => { const c = P(...q); h += `<circle class="bad-ring" cx="${r1(c[0])}" cy="${r1(c[1])}" r="13"/>`; });
   if (snapPt) { const c = P(...snapPt); h += `<circle class="snap" cx="${r1(c[0])}" cy="${r1(c[1])}" r="10"/>`; }
-  h += `<text class="scale" x="12" y="${H-12}">1 square = ${UNIT_N} N</text>`;
+  h += `<text class="scale" x="12" y="${H-12}">${st.unitsCm ? `1 square = 1 cm = ${unitN()} N` : `1 square = ${unitN()} N`}</text>`;
   vad.innerHTML = h;
   if (hl != null) applyHL();
 }
@@ -833,8 +1013,96 @@ function updateStatus(){
       'The VAD doesn’t end where it started, so the forces are unbalanced (Σ<i>F</i> ≠ 0).';
   }
   $('#msg').innerHTML = msg;
+  clearStaleCheck();
 }
-function render(){ renderSketch(); renderID(); renderFBD(); renderChips(); renderVAD(); updateStatus(); applyHL(); }
+// "F_TCR = Tension Force Exerted ON the Crate BY the Rope", with the type, on and by letters in bold.
+const TYPE_NAME = { g:'Gravitational', N:'Normal', f:'Friction', T:'Tension', P:'Push', D:'Drag' };
+function renderForceKey(){
+  const names = {};   // object letter -> name, read from the scenario's key ("R = rope, ...")
+  sc().key.split(',').forEach(part => { const [k, v] = part.split('=').map(t => t.trim()); names[k] = v.replace(/\b\w/g, c => c.toUpperCase()); });
+  const boldFirst = w => `<strong>${w[0]}</strong>${w.slice(1)}`;
+  $('#force-key').innerHTML = sc().forces.map((f,i) =>
+    `<li data-f="${i}"><span style="color:var(--f${i})">${htmlLabel(f)}</span> = ${boldFirst(TYPE_NAME[f.t])} Force Exerted ON the ${boldFirst(names[f.on])} BY the ${boldFirst(names[f.by])}</li>`).join('');
+}
+/* ---------- Check my VAD ----------
+   Two steps, the second shown only once the first passes: (1) every force joined head to tail in one chain;
+   (2) the VAD ends where it started, which is what the sketch's motion map (Δv = 0) requires.
+   Hints only: it never shows the answer. */
+const NEAR_TOL = 0.5;   // grid squares: a gap smaller than this is "almost" closed
+const LINK_TOL = 0.05;
+const near = (a, b) => dist(a, b) < LINK_TOL;
+const nm = p => htmlLabel(F(p.id));
+const placedSig = () => [...st.placed.values()].map(p => `${p.id}:${p.x.toFixed(3)},${p.y.toFixed(3)},${p.len.toFixed(3)}`).sort().join('|') + `#${si}`;
+const sysN = () => { const m = {}; sc().key.split(',').forEach(t => { const [k, v] = t.split('=').map(x => x.trim()); m[k] = v; }); return (m[F(0).on] || 'object').toLowerCase(); };
+function chainOrder(){   // ids in head-to-tail order if all placed arrows form one chain, else null
+  const arr = [...st.placed.values()];
+  if (arr.length <= 1) return arr.map(p => p.id);
+  const joins = (a, b) => near(tipOf(a), [b.x, b.y]);
+  const walk = (path, left) => {
+    if (!left.length) return path;
+    for (const q of left) if (joins(path.at(-1), q)) { const r = walk([...path, q], left.filter(x => x !== q)); if (r) return r; }
+    return null;
+  };
+  for (const a of arr) { const r = walk([a], arr.filter(x => x !== a)); if (r) return r.map(p => p.id); }
+  return null;
+}
+function checkChain(){
+  const total = sc().forces.length, arr = [...st.placed.values()], pts = [];
+  if (!arr.length) return { ok:false, msg:'Bring the forces from the free body diagram into the VAD first: click each force on the FBD.', pts };
+  if (arr.length < total) {
+    const miss = sc().forces.map((f, i) => i).filter(i => !st.placed.has(i)).map(i => htmlLabel(F(i)));
+    return { ok:false, msg:`Your FBD has ${total} forces, but your VAD has ${arr.length}. Every force from the FBD goes in the VAD once. Still missing: ${miss.join(', ')}.`, pts };
+  }
+  if (chainOrder()) return { ok:true, msg:'Every force from the FBD is in the VAD, and each tail sits on the head of the arrow before it.', pts };
+  const T = p => [p.x, p.y], H = p => tipOf(p);
+  const next = new Map(arr.map(p => [p.id, arr.filter(q => q !== p && near(H(p), T(q)))]));
+  const prev = new Map(arr.map(q => [q.id, arr.filter(p => p !== q && near(H(p), T(q)))]));
+  for (const p of arr) for (const q of arr) {
+    if (p.id >= q.id) continue;
+    if (near(H(p), H(q))) return { ok:false, msg:`${nm(p)} and ${nm(q)} meet <strong>head to head</strong>. In a VAD, each tail goes on the head of the arrow before it.`, pts:[H(p)] };
+    if (near(T(p), T(q)) && !prev.get(p.id).length && !prev.get(q.id).length)
+      return { ok:false, msg:`${nm(p)} and ${nm(q)} start from the same point (<strong>tail to tail</strong>). In a VAD, each tail goes on the head of the arrow before it.`, pts:[T(p)] };
+  }
+  for (const p of arr) if (next.get(p.id).length > 1) {
+    const [a, b] = next.get(p.id);
+    return { ok:false, msg:`${nm(a)} and ${nm(b)} both start from the head of ${nm(p)}. Only one arrow can follow each force.`, pts:[H(p)] };
+  }
+  for (const q of arr) if (prev.get(q.id).length > 1) {
+    const [a, b] = prev.get(q.id);
+    return { ok:false, msg:`${nm(a)} and ${nm(b)} both end at the tail of ${nm(q)}. Only one arrow can come before each force.`, pts:[T(q)] };
+  }
+  const loose = arr.find(p => !next.get(p.id).length && !prev.get(p.id).length);
+  if (loose) return { ok:false, msg:`${nm(loose)} isn’t joined to the others. Put its tail on the head of another arrow.`, pts:[T(loose)] };
+  const starts = arr.filter(p => !prev.get(p.id).length);
+  return { ok:false, msg:`Your arrows form ${starts.length} separate chains. Join them into one chain, with each tail on the head of the arrow before it.`, pts:starts.map(T) };
+}
+function checkMotion(){
+  const A = analyze(), gap = Math.hypot(...A.sum);
+  if (gap < CLOSE_TOL) return { ok:true, msg:`Your VAD ends where it started, so the forces are balanced. Balanced forces is consistent with the scenario: the ${sysN()}’s velocity is not changing.`, pts:[] };
+  const pts = [A.startTail, A.endTip];
+  if (gap < NEAR_TOL) return { ok:false, maybe:true, msg:`Your VAD <strong>almost</strong> ends where it started. The scenario shows the ${sysN()}’s velocity is not changing, so make it end exactly where it started.`, pts };
+  return { ok:false, msg:`Your VAD doesn’t end where it started, but the scenario shows the ${sysN()}’s velocity is not changing. Adjust the lengths of the unknown forces until your VAD ends where it started.`, pts };
+}
+function runCheck(){
+  const c1 = checkChain(), c2 = c1.ok ? checkMotion() : null, done = c1.ok && c2.ok;
+  const row = (cls, mk, ttl, msg) => `<li class="${cls}"><span class="mk" aria-hidden="true">${mk}</span><span><span class="ttl">${ttl}</span>${msg}</span></li>`;
+  const mark = r => r.ok ? ['ok', '✓'] : r.maybe ? ['maybe', '?'] : ['no', '✗'];
+  let h = '<ol>' + row(...mark(c1), c1.ok ? '1. You correctly added every force head to tail' : '1. You DID NOT add every force head to tail', c1.msg);
+  h += c2 ? row(...mark(c2), c2.ok ? '2. Your VAD result is consistent with the motion'
+                             : c2.maybe ? '2. Consistent with the motion?' : '2. Your VAD result is INCONSISTENT with the motion', c2.msg)
+          : row('wait', '–', '2. Consistent with the motion', 'Fix step 1 first.');
+  h += '</ol>' + (done ? '<div class="done good"><span aria-hidden="true">✓</span><span>Your VAD is correct.</span></div>'
+                      : '<div class="done">Not yet. Fix the step marked above, then check again.</div>');
+  const el = $('#check'); el.innerHTML = h; el.hidden = false;
+  st.check = { sig:placedSig(), pts:(c2 && !c2.ok ? c2.pts : c1.pts) };
+  renderVAD();
+}
+// Any change to the VAD (or scenario) makes the last check stale: clear it and its markers.
+function clearStaleCheck(){
+  if (st.check && st.check.sig !== placedSig()) { st.check = null; $('#check').hidden = true; $('#check').innerHTML = ''; }
+}
+$('#check-btn').addEventListener('click', runCheck);
+function render(){ renderSketch(); renderID(); renderFBD(); renderForceKey(); renderChips(); renderVAD(); updateStatus(); applyHL(); }
 
 function showHint(text, sticky=false){
   const el = $('#hint'); el.textContent = text; el.classList.add('show');
@@ -916,7 +1184,9 @@ vad.addEventListener('pointerup', endDrag);
 vad.addEventListener('pointercancel', endDrag);
 
 /* ---------- wiring ---------- */
-$('#scns').addEventListener('click', e => { const b = e.target.closest('[data-s]'); if (b) selectScenario(+b.dataset.s); });
+$('#scns').addEventListener('change', e => selectScenario(+e.target.value));
+$('#prev').addEventListener('click', () => { if (si > 0) selectScenario(si - 1); });
+$('#next').addEventListener('click', () => { if (si < SCN.length - 1) selectScenario(si + 1); });
 $('#chips').addEventListener('click', e => { const b = e.target.closest('[data-i]'); if (b) toggleForce(+b.dataset.i); });
 fbd.addEventListener('click', e => { const g = e.target.closest('[data-i]'); if (g) toggleForce(+g.dataset.i); });
 fbd.addEventListener('keydown', e => {
@@ -924,6 +1194,7 @@ fbd.addEventListener('keydown', e => {
   if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); toggleForce(+g.dataset.i); }
 });
 $('#rails').addEventListener('change', e => { st.rails = e.target.checked; renderVAD(); });
+document.querySelectorAll('input[name="vu"]').forEach(r => r.addEventListener('change', e => { st.unitsCm = e.target.value === 'cm'; renderVAD(); }));
 document.querySelector('.anglebar').addEventListener('change', e => {
   const t = e.target;
   if (t.dataset.ang) st.ang[t.dataset.ang] = t.checked;
