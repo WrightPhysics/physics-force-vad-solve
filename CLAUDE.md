@@ -64,6 +64,7 @@ Every representation panel except the VAD has a Hide/Show button (placeholder as
 - **Motion maps:**
   - At rest: "v = 0,  Δv⃗ = 0" above the system (v here is speed, no arrow).
   - Constant velocity: three equally spaced black dots with equal **light green** velocity arrows (`--vel`), each labeled v⃗; dots drawn **on top of** the arrows; "Δv⃗ = 0" above the row. Dark green (`--dv`) is reserved for Δv⃗ arrows.
+- **Linked highlights (`SKETCH_HL`, same order as `SKETCH`):** hovering a force on the FBD, ID, VAD or a chip lights up where that interaction meets the system boundary on the sketch, in the force's color, and fades the rest of the sketch. Compression/shear → the stretch of boundary on the surface (surface edge, or along the incline); extension → the short piece of rope, cable or spring where it crosses the boundary; push → where the hands cross the boundary. Gravity → the whole boundary plus a short arrow straight down from the center of mass. They're hand-placed per scenario, so a new or changed sketch needs its `SKETCH_HL` entry updated too. Highlights have `pointer-events:none` (the sketch itself isn't a hover source).
 - Vector symbols get a small arrow over the letter (`mathText` helper).
 - Stick figures are tall enough that the hand is **below the shoulder** (arm reaches down to rope/handle, not up).
 - Given angles are drawn with a dashed reference line and arc; annotation text has a light halo so it stays readable.

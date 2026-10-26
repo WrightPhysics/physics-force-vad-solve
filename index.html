@@ -76,6 +76,11 @@ h2{font-size:1.05rem;margin:0 0 10px}
 .id-int{cursor:default}
 [data-f]{transition:opacity .12s}
 .dim{opacity:.15}
+.sk-hl{fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;opacity:0;pointer-events:none;transition:opacity .12s}
+.sk-hl-b{stroke-width:5.5;stroke-dasharray:8 5;stroke-linecap:butt}
+.sk-hl.hi{opacity:.95}
+.sk-hl.dim{opacity:0}
+#sketch.hl-on>*:not(.sk-hl):not(.sk-hlw){opacity:.3}
 .hi .id-curve{stroke-width:3.2}
 @media (prefers-reduced-motion:reduce){[data-f]{transition:none}}
 .panel{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px}
@@ -756,7 +761,43 @@ const SKETCH = [
     skT(116,62,'20 N push','sk-note','start') + skT(70,44,'You (Y)','sk-lbl','end') +
     skT(14,196,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end')
 ];
-function renderSketch(){ $('#sketch').innerHTML = SKETCH[si](); }
+/* ---------- sketch highlights: where each force's interaction meets the system boundary ----------
+   Same order as SKETCH. Hidden until a force is hovered (data-f + applyHL): contact forces light up the stretch of
+   boundary where the contact happens (surface edge, rope/cable/spring crossing, hands); gravity lights up the whole
+   boundary plus a short arrow down from the center of mass. */
+const hlLine = (i, d) => `<path class="sk-hl" data-f="${i}" d="${d}" style="stroke:var(--f${i})"/>`;
+const hlRect = (i, x, y, w, h) => `<rect class="sk-hl sk-hl-b" data-f="${i}" x="${x}" y="${y}" width="${w}" height="${h}" rx="7" style="stroke:var(--f${i})"/>`;
+const hlPath = (i, d) => `<path class="sk-hl sk-hl-b" data-f="${i}" d="${d}" style="stroke:var(--f${i})"/>`;
+const hlCoM = (i, x, y, len) => `<g class="sk-hl" data-f="${i}"><circle cx="${x}" cy="${y}" r="3.4" fill="var(--f${i})" stroke="none"/>${arrow(x, y, x, y+len, `var(--f${i})`, 3.4)}</g>`;
+const hlWrap = (tf, inner) => `<g class="sk-hlw" transform="${tf}">${inner}</g>`;
+const SKETCH_HL = [
+  // BFPM #1 Pulling Horizontally
+  () => hlLine(1,'M133,152H146') + hlLine(2,'M57,172H131') + hlLine(3,'M57,172H131') + hlRect(0,49,125,90,47) + hlCoM(0,94,152,60),
+  // BFPM #2 Pulling Up at an Angle
+  () => hlLine(1,'M115.8,148.2L127.6,142.7') + hlLine(2,'M50,172H114') + hlLine(3,'M50,172H114') + hlRect(0,43,119,78,53) + hlCoM(0,82,149,63),
+  // BFPM #3 Pushing Down at an Angle
+  () => hlLine(1,'M180,119.9L194,128') + hlLine(2,'M194,172H264') + hlLine(3,'M194,172H264') + hlRect(0,187,121,84,51) + hlCoM(0,229,150,60),
+  // BFPM #4 Block on Incline
+  () => hlWrap('translate(167,140) rotate(-20)', hlLine(1,'M-25,0H25') + hlLine(2,'M-25,0H25') + hlRect(0,-31,-37,62,37)) + hlCoM(0,162.2,126.8,48),
+  // BFPM #5 Pulled Up Frictionless Incline
+  () => hlWrap('translate(150,157.8) rotate(-15)', hlLine(1,'M-28,0H28') + hlLine(2,'M28,-16H42') + hlRect(0,-34,-33,68,33)) + hlCoM(0,145.9,142.3,42),
+  // BFPM #6 Traffic Light
+  () => hlLine(1,'M136,138.8L150,148.6') + hlLine(2,'M190,146.6L199,134') + hlRect(0,143,141,54,68) + hlCoM(0,170,175,42),
+  // BFPM #7 Horizontal Spring
+  () => hlLine(1,'M133,152H146') + hlLine(2,'M57,172H131') + hlLine(3,'M57,172H131') + hlRect(0,49,125,90,47) + hlCoM(0,94,152,60),
+  // Book at rest on a table
+  () => hlLine(1,'M133,120H197') + hlRect(0,126,92,78,28) + hlCoM(0,165,110,42),
+  // Box at rest on a ramp
+  () => hlWrap('translate(172,114) rotate(-30)', hlLine(1,'M-25,0H25') + hlLine(2,'M-25,0H25') + hlRect(0,-31,-37,62,37)) + hlCoM(0,165,101.9,42),
+  // Sign hanging from two ropes
+  () => hlLine(1,'M113,130.2L127,138.3') + hlLine(2,'M214,136L226,124') + hlRect(0,121,131,98,58) + hlCoM(0,170,160,56),
+  // Sled pulled at constant velocity
+  () => hlLine(1,'M134,141.9L147,134.5') + hlLine(2,'M31,172H133') + hlLine(3,'M31,172H133') + hlRect(0,24,130,116,42) + hlCoM(0,80,150,60),
+  // Lawn mower pushed at constant velocity
+  () => hlLine(1,'M104,88L114,93.8') + hlLine(2,'M190,176H276') + hlLine(3,'M190,176H276') +
+    hlPath(0,'M114,90 L183,130 L278,130 Q284,130 284,136 L284,170 Q284,176 278,176 L188,176 Q182,176 182,170 L182,150 L104,98 Q98,94 102,91 Q107,88 114,90Z') + hlCoM(0,230,153,60)
+];
+function renderSketch(){ $('#sketch').innerHTML = SKETCH[si]() + SKETCH_HL[si](); }
 
 /* ---------- interaction diagram ---------- */
 function renderID(){
@@ -824,6 +865,7 @@ function renderID(){
 /* ---------- linked highlighting across representations ---------- */
 let hl = null;
 function applyHL(){
+  $('#sketch').classList.toggle('hl-on', hl != null);
   document.querySelectorAll('[data-f]').forEach(el => {
     const on = hl != null && +el.dataset.f === hl;
     el.classList.toggle('hi', on);
