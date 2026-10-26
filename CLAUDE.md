@@ -23,7 +23,7 @@ Live at **https://wrightphysics.org/physics-force-vad-solve/**
 Top to bottom:
 
 1. Title: **"Solving for Forces with your Force Vector Addition Diagram"**
-2. Scenario picker: ← / dropdown / → (same as the pumpkin sim). The original five are labeled **"Scenario N: name"**; the 4.9 ones are labeled **"BFPM 4.9 Apply The Model #N"** (`label` on the scenario; `name` keeps the book's title)
+2. Scenario picker: ← / dropdown / → (same as the pumpkin sim). The 4.9 ones come **first**, labeled **"BFPM 4.9 Apply The Model #N"**; the original five follow, labeled **"Scenario N: name"** (kept as before, so they're still 1–5). `SCN` and `SKETCH` are parallel arrays: reorder them together (`label` on the scenario; `name` keeps the book's title)
 3. Top row, three panels: **Written Description** | **Sketch** | **Interaction Diagram (ID)**
 4. Middle row, side by side: **Free Body Diagram (FBD)** (~40% width) | **Force Vector Addition Diagram (VAD)**
 5. **Angle Annotations** bar at the very bottom (applies to the FBD and VAD above it)

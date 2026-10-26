@@ -248,53 +248,6 @@ button.btn.btn-check:hover{filter:brightness(1.25)}
 const UNIT_N = 10; // default newtons per grid square; a scenario can set `sq` for a finer grid
 const CLOSE_TOL = 0.25; // grid units: a VAD this close to its start counts as ending where it started
 const SCN = [
-  { name:"Book at rest on a table", motion:"is at rest",
-    text:"A 3 kg book sits at rest on a level table.",
-    key:"B = book, T = table, E = Earth",
-    forces:[{t:"g",on:"B",by:"E",ang:270,mag:3},{t:"N",on:"B",by:"T",ang:90}],
-    target:[0,0],
-    id:{ sys:"B",
-      objs:{ B:{name:"Book (B)",x:95,y:65}, T:{name:"Table (T)",x:265,y:125}, E:{name:"Earth (E)",x:115,y:225} },
-      ints:[{a:"E",b:"B",type:"field",f:0,bend:-30},{a:"T",b:"B",type:"compression",f:1,bend:20},{a:"E",b:"T",type:"field",bend:-20}] } },
-  { name:"Box at rest on a 30° ramp", motion:"is at rest",
-    text:"A 5 kg box sits at rest on a ramp that rises to the right at 30°. Static friction keeps it from sliding.",
-    key:"B = box, R = ramp, E = Earth",
-    forces:[{t:"g",on:"B",by:"E",ang:270,mag:5},{t:"N",on:"B",by:"R",ang:120},{t:"f",on:"B",by:"R",ang:30}],
-    target:[0,0],
-    id:{ sys:"B",
-      objs:{ B:{name:"Box (B)",x:95,y:65}, R:{name:"Ramp (R)",x:265,y:120}, E:{name:"Earth (E)",x:115,y:225} },
-      ints:[{a:"R",b:"B",type:"compression",f:1,bend:-34},{a:"R",b:"B",type:"shear",f:2,bend:34},{a:"E",b:"B",type:"field",f:0,bend:-30},{a:"E",b:"R",type:"field",bend:-20}] } },
-  { name:"Sign hanging from two ropes", motion:"is at rest",
-    text:"A 5 kg sign hangs at rest from two ropes tied to walls. The left rope pulls up and to the left at 30° above horizontal; the right rope pulls up and to the right at 45°.",
-    key:"S = sign, L = left rope, R = right rope, W = walls, E = Earth",
-    forces:[{t:"g",on:"S",by:"E",ang:270,mag:5},{t:"T",on:"S",by:"L",ang:150},{t:"T",on:"S",by:"R",ang:45}],
-    target:[0,0],
-    id:{ sys:"S",
-      objs:{ W:{name:"Walls (W)",x:180,y:32}, L:{name:"Left rope (L)",x:62,y:125}, E:{name:"Earth (E)",x:180,y:125}, R:{name:"Right rope (R)",x:298,y:125}, S:{name:"Sign (S)",x:180,y:222} },
-      ints:[{a:"L",b:"S",type:"stretch",f:1,bend:-22},{a:"R",b:"S",type:"stretch",f:2,bend:22},{a:"W",b:"L",type:"stretch",bend:22},{a:"W",b:"R",type:"stretch",bend:-22},
-            {a:"E",b:"S",type:"field",f:0,bend:0},{a:"E",b:"W",type:"field",bend:0}] } },
-  { name:"Sled pulled at constant velocity", motion:"moves at constant velocity",
-    text:"You pull a 5 kg sled to the right across level snow at constant velocity. The rope pulls on the sled with 30 N at 30° above horizontal, and kinetic friction acts on it.",
-    key:"S = sled, R = rope, Y = you, G = ground, E = Earth",
-    forces:[{t:"g",on:"S",by:"E",ang:270,mag:5},{t:"T",on:"S",by:"R",ang:30,mag:3},{t:"N",on:"S",by:"G",ang:90},{t:"f",on:"S",by:"G",ang:180}],
-    target:[0,0],
-    id:{ sys:"S",
-      objs:{ S:{name:"Sled (S)",x:70,y:85}, R:{name:"Rope (R)",x:180,y:35}, Y:{name:"You (Y)",x:292,y:85}, G:{name:"Ground (G)",x:180,y:165}, E:{name:"Earth (E)",x:180,y:248} },
-      ints:[{a:"R",b:"S",type:"stretch",f:1,bend:16},{a:"R",b:"Y",type:"stretch",bend:-16},
-            {a:"G",b:"S",type:"compression",f:2,bend:-22},{a:"G",b:"S",type:"shear",f:3,bend:22},
-            {a:"G",b:"Y",type:"compression",bend:22},{a:"G",b:"Y",type:"shear",bend:-22},
-            {a:"E",b:"S",type:"field",f:0,bend:-55},{a:"E",b:"Y",type:"field",bend:55},{a:"E",b:"G",type:"field",bend:0}] } },
-  { name:"Lawn mower pushed at constant velocity", motion:"moves at constant velocity",
-    text:"A 3 kg lawn mower rolls to the right across level grass at constant velocity. You push on the handle with 20 N, directed 30° below horizontal. The grass exerts friction on the mower.",
-    key:"M = mower, Y = you, G = ground, E = Earth",
-    forces:[{t:"g",on:"M",by:"E",ang:270,mag:3},{t:"P",on:"M",by:"Y",ang:330,mag:2},{t:"N",on:"M",by:"G",ang:90},{t:"f",on:"M",by:"G",ang:180}],
-    target:[0,0],
-    id:{ sys:"M",
-      objs:{ Y:{name:"You (Y)",x:70,y:70}, M:{name:"Mower (M)",x:290,y:70}, G:{name:"Ground (G)",x:180,y:165}, E:{name:"Earth (E)",x:180,y:248} },
-      ints:[{a:"Y",b:"M",type:"compression",f:1,bend:-22},
-            {a:"G",b:"M",type:"compression",f:2,bend:22},{a:"G",b:"M",type:"shear",f:3,bend:-22},
-            {a:"G",b:"Y",type:"compression",bend:-22},{a:"G",b:"Y",type:"shear",bend:22},
-            {a:"E",b:"M",type:"field",f:0,bend:55},{a:"E",b:"Y",type:"field",bend:-55},{a:"E",b:"G",type:"field",bend:0}] } },
   // ---- 4.9 Apply the Model: Balanced Forces Particle Model (BFPM) ----
   { name:"Pulling Horizontally", label:"BFPM 4.9 Apply The Model #1", motion:"moves at constant velocity",
     text:"A box of mass 8.0 kg is pulled across the floor at a constant velocity by a horizontal rope. The tension in the rope is measured to be 20.0 N.",
@@ -362,12 +315,59 @@ const SCN = [
       objs:{ B:{name:"Block (B)",x:70,y:85}, S:{name:"Spring (S)",x:250,y:50}, G:{name:"Ground (G)",x:180,y:165}, E:{name:"Earth (E)",x:180,y:248} },
       ints:[{a:"S",b:"B",type:"stretch",f:1,bend:16},
             {a:"G",b:"B",type:"compression",f:2,bend:-22},{a:"G",b:"B",type:"shear",f:3,bend:22},
-            {a:"E",b:"B",type:"field",f:0,bend:-55},{a:"E",b:"G",type:"field",bend:0}] } }
+            {a:"E",b:"B",type:"field",f:0,bend:-55},{a:"E",b:"G",type:"field",bend:0}] } },
+  { name:"Book at rest on a table", label:"Scenario 1: Book at rest on a table", motion:"is at rest",
+    text:"A 3 kg book sits at rest on a level table.",
+    key:"B = book, T = table, E = Earth",
+    forces:[{t:"g",on:"B",by:"E",ang:270,mag:3},{t:"N",on:"B",by:"T",ang:90}],
+    target:[0,0],
+    id:{ sys:"B",
+      objs:{ B:{name:"Book (B)",x:95,y:65}, T:{name:"Table (T)",x:265,y:125}, E:{name:"Earth (E)",x:115,y:225} },
+      ints:[{a:"E",b:"B",type:"field",f:0,bend:-30},{a:"T",b:"B",type:"compression",f:1,bend:20},{a:"E",b:"T",type:"field",bend:-20}] } },
+  { name:"Box at rest on a 30° ramp", label:"Scenario 2: Box at rest on a 30° ramp", motion:"is at rest",
+    text:"A 5 kg box sits at rest on a ramp that rises to the right at 30°. Static friction keeps it from sliding.",
+    key:"B = box, R = ramp, E = Earth",
+    forces:[{t:"g",on:"B",by:"E",ang:270,mag:5},{t:"N",on:"B",by:"R",ang:120},{t:"f",on:"B",by:"R",ang:30}],
+    target:[0,0],
+    id:{ sys:"B",
+      objs:{ B:{name:"Box (B)",x:95,y:65}, R:{name:"Ramp (R)",x:265,y:120}, E:{name:"Earth (E)",x:115,y:225} },
+      ints:[{a:"R",b:"B",type:"compression",f:1,bend:-34},{a:"R",b:"B",type:"shear",f:2,bend:34},{a:"E",b:"B",type:"field",f:0,bend:-30},{a:"E",b:"R",type:"field",bend:-20}] } },
+  { name:"Sign hanging from two ropes", label:"Scenario 3: Sign hanging from two ropes", motion:"is at rest",
+    text:"A 5 kg sign hangs at rest from two ropes tied to walls. The left rope pulls up and to the left at 30° above horizontal; the right rope pulls up and to the right at 45°.",
+    key:"S = sign, L = left rope, R = right rope, W = walls, E = Earth",
+    forces:[{t:"g",on:"S",by:"E",ang:270,mag:5},{t:"T",on:"S",by:"L",ang:150},{t:"T",on:"S",by:"R",ang:45}],
+    target:[0,0],
+    id:{ sys:"S",
+      objs:{ W:{name:"Walls (W)",x:180,y:32}, L:{name:"Left rope (L)",x:62,y:125}, E:{name:"Earth (E)",x:180,y:125}, R:{name:"Right rope (R)",x:298,y:125}, S:{name:"Sign (S)",x:180,y:222} },
+      ints:[{a:"L",b:"S",type:"stretch",f:1,bend:-22},{a:"R",b:"S",type:"stretch",f:2,bend:22},{a:"W",b:"L",type:"stretch",bend:22},{a:"W",b:"R",type:"stretch",bend:-22},
+            {a:"E",b:"S",type:"field",f:0,bend:0},{a:"E",b:"W",type:"field",bend:0}] } },
+  { name:"Sled pulled at constant velocity", label:"Scenario 4: Sled pulled at constant velocity", motion:"moves at constant velocity",
+    text:"You pull a 5 kg sled to the right across level snow at constant velocity. The rope pulls on the sled with 30 N at 30° above horizontal, and kinetic friction acts on it.",
+    key:"S = sled, R = rope, Y = you, G = ground, E = Earth",
+    forces:[{t:"g",on:"S",by:"E",ang:270,mag:5},{t:"T",on:"S",by:"R",ang:30,mag:3},{t:"N",on:"S",by:"G",ang:90},{t:"f",on:"S",by:"G",ang:180}],
+    target:[0,0],
+    id:{ sys:"S",
+      objs:{ S:{name:"Sled (S)",x:70,y:85}, R:{name:"Rope (R)",x:180,y:35}, Y:{name:"You (Y)",x:292,y:85}, G:{name:"Ground (G)",x:180,y:165}, E:{name:"Earth (E)",x:180,y:248} },
+      ints:[{a:"R",b:"S",type:"stretch",f:1,bend:16},{a:"R",b:"Y",type:"stretch",bend:-16},
+            {a:"G",b:"S",type:"compression",f:2,bend:-22},{a:"G",b:"S",type:"shear",f:3,bend:22},
+            {a:"G",b:"Y",type:"compression",bend:22},{a:"G",b:"Y",type:"shear",bend:-22},
+            {a:"E",b:"S",type:"field",f:0,bend:-55},{a:"E",b:"Y",type:"field",bend:55},{a:"E",b:"G",type:"field",bend:0}] } },
+  { name:"Lawn mower pushed at constant velocity", label:"Scenario 5: Lawn mower pushed at constant velocity", motion:"moves at constant velocity",
+    text:"A 3 kg lawn mower rolls to the right across level grass at constant velocity. You push on the handle with 20 N, directed 30° below horizontal. The grass exerts friction on the mower.",
+    key:"M = mower, Y = you, G = ground, E = Earth",
+    forces:[{t:"g",on:"M",by:"E",ang:270,mag:3},{t:"P",on:"M",by:"Y",ang:330,mag:2},{t:"N",on:"M",by:"G",ang:90},{t:"f",on:"M",by:"G",ang:180}],
+    target:[0,0],
+    id:{ sys:"M",
+      objs:{ Y:{name:"You (Y)",x:70,y:70}, M:{name:"Mower (M)",x:290,y:70}, G:{name:"Ground (G)",x:180,y:165}, E:{name:"Earth (E)",x:180,y:248} },
+      ints:[{a:"Y",b:"M",type:"compression",f:1,bend:-22},
+            {a:"G",b:"M",type:"compression",f:2,bend:22},{a:"G",b:"M",type:"shear",f:3,bend:-22},
+            {a:"G",b:"Y",type:"compression",bend:-22},{a:"G",b:"Y",type:"shear",bend:22},
+            {a:"E",b:"M",type:"field",f:0,bend:55},{a:"E",b:"Y",type:"field",bend:-55},{a:"E",b:"G",type:"field",bend:0}] } }
 ];
 
 const $ = s => document.querySelector(s);
 const vad = $('#vad'), fbd = $('#fbd');
-let si = 1;
+let si = 0;
 const st = { placed:new Map(), rails:false, ang:{ h:false, v:false, b:false }, angFBD:true, angVAD:true, unitsCm:false, check:null, history:[] };
 let drag = null, snapPt = null, S = 40, CX = 0, CY = 0, lastTap = {}, hintTimer = null;
 
@@ -629,54 +629,6 @@ function slopeMap(s, e, h, n=3, spacing=46, len=32){
   return out + mathText(c[0]+nm[0]*32, c[1]+nm[1]*32, [{t:'Δ'}, V, {t:' = 0'}]);
 }
 const SKETCH = [
-  // Book at rest on a table
-  () => hatch(30,290,190) +
-    `<path class="sk" d="M80,120h160v12h-160z M92,132v58 M228,132v58"/>`+
-    `<rect class="sk sk-fill" x="135" y="100" width="60" height="20" rx="2"/>`+
-    sysBox(126, 92, 78, 28) +
-    skT(165,114,'Book (B)') + skT(160,162,'Table (T)') + skT(290,212,'Earth (E)','sk-lbl','end') +
-    restMap(165, 76),
-  // Box at rest on a ramp
-  () => hatch(20,300,190) +
-    `<path class="sk sk-fill" d="M40,190L260,190L260,63Z"/>`+
-    `<g transform="translate(172,114) rotate(-30)"><rect class="sk sk-fill" x="-22" y="-28" width="44" height="28" rx="2"/>`+
-    `<rect class="sk-sys" x="-31" y="-37" width="62" height="37" rx="7"/></g>`+
-    skArc(40,190,40,-30,0,'30°',56) +
-    skT(112,82,'Box (B)') + skT(212,176,'Ramp (R)') + skT(300,212,'Earth (E)','sk-lbl','end') +
-    restMap(150, 48),
-  // Sign hanging from two ropes
-  () => vhatch(22,20,206,-1) + vhatch(298,20,206,1) +
-    `<path class="sk" d="M130,140L22,78 M210,140L298,52"/>`+
-    `<rect class="sk sk-fill" x="130" y="140" width="80" height="40" rx="2"/>`+
-    sysBox(121, 131, 98, 58) +
-    `<path class="sk-ref" d="M130,140H82 M210,140H258"/>`+
-    skArc(130,140,34,180,210,'30°',47) + skArc(210,140,34,-45,0,'45°',48) +
-    skT(170,165,'Sign (S)') +
-    skT(66,74,'Left rope (L)') + skT(256,62,'Right rope (R)','sk-lbl','end') +
-    skT(30,214,'Walls (W)','sk-lbl','start') + skT(290,214,'Earth (E)','sk-lbl','end') +
-    restMap(170, 120),
-  // Sled pulled at constant velocity: runners rest on the ground
-  () => hatch(10,310,172) +
-    `<rect class="sk sk-fill" x="40" y="138" width="80" height="24" rx="3"/>`+
-    `<path class="sk" d="M30,172H122 Q134,172 132,160 M54,162V172 M106,162V172"/>`+
-    `<path class="sk" d="M120,150L209,99"/>` + person(222, 172, [209,99]) +
-    sysBox(24, 130, 116, 42) +
-    `<path class="sk-ref" d="M120,150H168"/>` + skArc(120,150,36,-30,0,'30°',50) +
-    motionMap(26, 76) +
-    skT(80,154,'Sled (S)') + skT(160,116,'Rope (R)','sk-lbl','end') +
-    skT(198,92,'30 N','sk-note','end') + skT(236,122,'You (Y)','sk-lbl','start') +
-    skT(14,192,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end'),
-  // Lawn mower pushed at constant velocity
-  () => hatch(10,310,176) +
-    `<rect class="sk sk-fill" x="190" y="140" width="80" height="26" rx="5"/>`+
-    `<circle class="sk sk-fill" cx="204" cy="167" r="9"/><circle class="sk sk-fill" cx="256" cy="167" r="9"/>`+
-    `<path class="sk" style="stroke-width:3" d="M104,88L194,140"/>` + person(84, 176, [104,88]) +
-    `<path class="sk-sys" d="M114,90 L183,130 L278,130 Q284,130 284,136 L284,170 Q284,176 278,176 L188,176 Q182,176 182,170 L182,150 L104,98 Q98,94 102,91 Q107,88 114,90Z"/>`+
-    `<path class="sk-ref" d="M104,88H152"/>` + skArc(104,88,40,0,30,'30°',64,7) +
-    motionMap(196, 58, 3, 40, 28) +
-    skT(230,157,'Mower (M)') +
-    skT(116,62,'20 N push','sk-note','start') + skT(70,44,'You (Y)','sk-lbl','end') +
-    skT(14,196,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end'),
   // Pulling Horizontally
   () => hatch(10,310,172) +
     `<rect class="sk sk-fill" x="56" y="132" width="76" height="40" rx="2"/>`+
@@ -747,7 +699,55 @@ const SKETCH = [
     sysBox(49, 125, 90, 47) +
     motionMap(46, 76) +
     skT(94,157,'Block (B)') + skT(185,132,'Spring (S)') + skT(190,114,'k = 150 N/m, stretched 0.04 m','sk-note') +
-    skT(14,192,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end')
+    skT(14,192,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end'),
+  // Book at rest on a table
+  () => hatch(30,290,190) +
+    `<path class="sk" d="M80,120h160v12h-160z M92,132v58 M228,132v58"/>`+
+    `<rect class="sk sk-fill" x="135" y="100" width="60" height="20" rx="2"/>`+
+    sysBox(126, 92, 78, 28) +
+    skT(165,114,'Book (B)') + skT(160,162,'Table (T)') + skT(290,212,'Earth (E)','sk-lbl','end') +
+    restMap(165, 76),
+  // Box at rest on a ramp
+  () => hatch(20,300,190) +
+    `<path class="sk sk-fill" d="M40,190L260,190L260,63Z"/>`+
+    `<g transform="translate(172,114) rotate(-30)"><rect class="sk sk-fill" x="-22" y="-28" width="44" height="28" rx="2"/>`+
+    `<rect class="sk-sys" x="-31" y="-37" width="62" height="37" rx="7"/></g>`+
+    skArc(40,190,40,-30,0,'30°',56) +
+    skT(112,82,'Box (B)') + skT(212,176,'Ramp (R)') + skT(300,212,'Earth (E)','sk-lbl','end') +
+    restMap(150, 48),
+  // Sign hanging from two ropes
+  () => vhatch(22,20,206,-1) + vhatch(298,20,206,1) +
+    `<path class="sk" d="M130,140L22,78 M210,140L298,52"/>`+
+    `<rect class="sk sk-fill" x="130" y="140" width="80" height="40" rx="2"/>`+
+    sysBox(121, 131, 98, 58) +
+    `<path class="sk-ref" d="M130,140H82 M210,140H258"/>`+
+    skArc(130,140,34,180,210,'30°',47) + skArc(210,140,34,-45,0,'45°',48) +
+    skT(170,165,'Sign (S)') +
+    skT(66,74,'Left rope (L)') + skT(256,62,'Right rope (R)','sk-lbl','end') +
+    skT(30,214,'Walls (W)','sk-lbl','start') + skT(290,214,'Earth (E)','sk-lbl','end') +
+    restMap(170, 120),
+  // Sled pulled at constant velocity: runners rest on the ground
+  () => hatch(10,310,172) +
+    `<rect class="sk sk-fill" x="40" y="138" width="80" height="24" rx="3"/>`+
+    `<path class="sk" d="M30,172H122 Q134,172 132,160 M54,162V172 M106,162V172"/>`+
+    `<path class="sk" d="M120,150L209,99"/>` + person(222, 172, [209,99]) +
+    sysBox(24, 130, 116, 42) +
+    `<path class="sk-ref" d="M120,150H168"/>` + skArc(120,150,36,-30,0,'30°',50) +
+    motionMap(26, 76) +
+    skT(80,154,'Sled (S)') + skT(160,116,'Rope (R)','sk-lbl','end') +
+    skT(198,92,'30 N','sk-note','end') + skT(236,122,'You (Y)','sk-lbl','start') +
+    skT(14,192,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end'),
+  // Lawn mower pushed at constant velocity
+  () => hatch(10,310,176) +
+    `<rect class="sk sk-fill" x="190" y="140" width="80" height="26" rx="5"/>`+
+    `<circle class="sk sk-fill" cx="204" cy="167" r="9"/><circle class="sk sk-fill" cx="256" cy="167" r="9"/>`+
+    `<path class="sk" style="stroke-width:3" d="M104,88L194,140"/>` + person(84, 176, [104,88]) +
+    `<path class="sk-sys" d="M114,90 L183,130 L278,130 Q284,130 284,136 L284,170 Q284,176 278,176 L188,176 Q182,176 182,170 L182,150 L104,98 Q98,94 102,91 Q107,88 114,90Z"/>`+
+    `<path class="sk-ref" d="M104,88H152"/>` + skArc(104,88,40,0,30,'30°',64,7) +
+    motionMap(196, 58, 3, 40, 28) +
+    skT(230,157,'Mower (M)') +
+    skT(116,62,'20 N push','sk-note','start') + skT(70,44,'You (Y)','sk-lbl','end') +
+    skT(14,196,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end')
 ];
 function renderSketch(){ $('#sketch').innerHTML = SKETCH[si](); }
 
