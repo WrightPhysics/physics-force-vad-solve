@@ -34,7 +34,7 @@ Every representation panel except the VAD has a Hide/Show button (placeholder as
 
 - **All scenarios are balanced (BFPM).** Students haven't studied net force yet. Current scenarios: book on table, box at rest on 30° ramp, sign on two ropes (attached to walls), sled pulled at constant velocity, lawn mower pushed at constant velocity, then the 7 from the course book's 4.9 Apply the Model (BFPM): Pulling Horizontally, Pulling Up at an Angle, Pushing Down at an Angle, Block on Incline, Pulled Up Frictionless Incline, Traffic Light, Horizontal Spring. The 4.9 scenarios use the book's problem text verbatim.
 - **Type-On-By subscripts:** `F_gBE` = gravitational force on Box by Earth. Each scenario's key lists its object letters (e.g. "B = box, R = ramp, E = Earth"). Pushes by a person use `P` and "Y = you" (e.g. `F_PMY`).
-- g = 10 N/kg. VAD grid: **1 square = 10 N** by default; a scenario can set `sq` for a finer grid (BFPM #7, the spring, uses 5 N) and then `mag` values are in squares of that size. The VAD has a **Force (N) / Scaled length (cm)** toggle for the vector labels (1 square = 1 cm).
+- g = 10 N/kg. VAD grid: **1 square = 10 N** by default; a scenario can set `sq` for a finer grid (BFPM #7, the spring, uses 5 N) and then `mag` values are in squares of that size. **By default the VAD shows no values** on the vector labels (and none on the force chips). A **Show values** checkbox turns them on and reveals a **Scaled length (cm) / Force (N)** choice, **cm by default** (1 square = 1 cm).
 - Masses are given in the written description, **not** on the sketch.
 
 ## VAD behavior (core pedagogy)
@@ -43,6 +43,7 @@ Every representation panel except the VAD has a Hide/Show button (placeholder as
 - **Direction is locked.** Arrows translate only; they can never rotate. Dragging a head moves it along a dashed line of action; pulling sideways shows "Direction is locked…".
 - **Unknown forces change magnitude** by dragging the arrowhead; known forces have fixed length.
 - Optional "Show lines of action" toggle.
+- **Show Vector Addition Animation** button (VAD header, next to Clear VAD): replays the student's own completed VAD (every force placed and joined head to tail): each arrow grows tail to head in chain order, then the result (green ring + ΣF = 0, or the dashed gap + ΣF ≠ 0). It never shows anything the student hasn't built. If the VAD isn't complete it shows a hint instead. The real VAD is ghosted while it plays; the button becomes **Stop animation**.
 - Status line at the top of the VAD panel, exact wording:
   - all placed and joined, balanced: **"The VAD ends where it started, so the forces are balanced (ΣF = 0)."**
   - all placed and joined, not balanced: **"The VAD doesn't end where it started, so the forces are unbalanced (ΣF ≠ 0)."**

@@ -101,6 +101,7 @@ h2{font-size:1.05rem;margin:0 0 10px}
 .main-head h2{margin:0}
 .tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .tools label{display:flex;gap:6px;align-items:center;cursor:pointer;font-size:.95rem}
+.tools .units[hidden]{display:none}
 .tools .units{display:flex;gap:12px;border:0;padding:0;margin:0;min-width:0}
 .anglebar{display:flex;flex-wrap:wrap;gap:10px 36px;margin-top:16px;padding:12px 16px}
 .anglebar fieldset{border:0;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px}
@@ -132,6 +133,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--f0);outline-off
 .lbl.ok{fill:var(--ink)}
 .snap{fill:none;stroke:var(--ink);stroke-width:2}
 .closed{fill:none;stroke:var(--good);stroke-width:3}
+#vad.animating>*:not(.grid):not(#anim):not(.scale){opacity:.08;pointer-events:none}
 .bad-ring{fill:none;stroke:var(--bad);stroke-width:3;opacity:.85}
 button.btn.btn-check{display:block;width:100%;margin-top:12px;padding:12px 14px;font-size:1.1rem;background:var(--ink);color:var(--panel);border-color:var(--ink)}
 button.btn.btn-check:hover{filter:brightness(1.25)}
@@ -213,8 +215,10 @@ button.btn.btn-check:hover{filter:brightness(1.25)}
         <h2 id="vad-h">Force Vector Addition Diagram (VAD)</h2>
         <div class="tools">
           <label><input type="checkbox" id="rails"> Show lines of action</label>
-          <fieldset class="units" aria-label="Label vectors with"><label><input type="radio" name="vu" value="N" checked> Force (N)</label><label><input type="radio" name="vu" value="cm"> Scaled length (cm)</label></fieldset>
-          <button class="btn" id="restart">Start over</button>
+          <label><input type="checkbox" id="show-vals"> Show values</label>
+          <fieldset class="units" id="units" aria-label="Show values as" hidden><label><input type="radio" name="vu" value="cm" checked> Scaled length (cm)</label><label><input type="radio" name="vu" value="N"> Force (N)</label></fieldset>
+          <button class="btn" id="restart">Clear VAD</button>
+          <button class="btn" id="anim-btn">Show Vector Addition Animation</button>
         </div>
       </div>
       <p id="msg" aria-live="polite"></p>
@@ -368,7 +372,7 @@ const SCN = [
 const $ = s => document.querySelector(s);
 const vad = $('#vad'), fbd = $('#fbd');
 let si = 0;
-const st = { placed:new Map(), rails:false, ang:{ h:false, v:false, b:false }, angFBD:true, angVAD:true, unitsCm:false, check:null, history:[] };
+const st = { placed:new Map(), rails:false, ang:{ h:false, v:false, b:false }, angFBD:true, angVAD:true, showVals:false, unitsCm:true, check:null, anim:null, history:[] };
 let drag = null, snapPt = null, S = 40, CX = 0, CY = 0, lastTap = {}, hintTimer = null;
 
 const sc = () => SCN[si];
@@ -891,7 +895,7 @@ function renderFBD(){
 }
 function renderChips(){
   $('#chips').innerHTML = sc().forces.map((f,i) =>
-    `<li><button class="chip" data-i="${i}" data-f="${i}" aria-pressed="${st.placed.has(i)}"><span class="sw" style="background:var(--f${i})"></span>${htmlLabel(f)}<span class="cm">${known(f)?fmtN(f.mag):'unknown'}</span></button></li>`).join('');
+    `<li><button class="chip" data-i="${i}" data-f="${i}" aria-pressed="${st.placed.has(i)}"><span class="sw" style="background:var(--f${i})"></span>${htmlLabel(f)}${st.showVals ? `<span class="cm">${known(f)?fmtN(f.mag):'unknown'}</span>` : ''}</button></li>`).join('');
 }
 function renderVAD(){
   const W = vad.clientWidth || 600, H = vad.clientHeight || 420;
@@ -989,18 +993,20 @@ function renderVAD(){
   am.labels.forEach(a => { lh += angText(place(a.cands, a.w, a.hh), a); });
   [...geo].sort((a,b) => b.p.len - a.p.len).forEach(g => {
     const fmt = st.unitsCm ? fmtCm : fmtN;
-    const magTxt = g.k ? fmt(g.f.mag) : '≈ ' + fmt(g.p.len);
+    const magTxt = !st.showVals ? '' : g.k ? fmt(g.f.mag) : '≈ ' + fmt(g.p.len);
     const wLab = tw(`italic 500 18px ${MATH}`, 'F') + tw(`500 12.24px ${MATH}`, sub(g.f));
-    const w = Math.max(wLab, tw(`12px ${BODY}`, magTxt)) + 8, hh = 38;
+    const w = Math.max(wLab, tw(`12px ${BODY}`, magTxt)) + 8, hh = magTxt ? 38 : 26;
     const r = place(besideSegment(g.t, g.tp, w, hh), w, hh);
     const cx = (r.x0+r.x1)/2;
-    lh += `<g class="lab">${svgLabel(g.f, cx, r.y0+12, 'middle', 18, g.col)}`+
-      `<text class="mag" x="${r1(cx)}" y="${r1(r.y1-5)}" text-anchor="middle">${magTxt}</text></g>`;
+    lh += `<g class="lab">${svgLabel(g.f, cx, magTxt ? r.y0+12 : (r.y0+r.y1)/2 - 2, 'middle', 18, g.col)}`+
+      (magTxt ? `<text class="mag" x="${r1(cx)}" y="${r1(r.y1-5)}" text-anchor="middle">${magTxt}</text>` : '') + `</g>`;
   });
   h += lh;
   if (st.check && st.check.sig === placedSig()) st.check.pts.forEach(q => { const c = P(...q); h += `<circle class="bad-ring" cx="${r1(c[0])}" cy="${r1(c[1])}" r="13"/>`; });
   if (snapPt) { const c = P(...snapPt); h += `<circle class="snap" cx="${r1(c[0])}" cy="${r1(c[1])}" r="10"/>`; }
   h += `<text class="scale" x="12" y="${H-12}">${st.unitsCm ? `1 square = 1 cm = ${unitN()} N` : `1 square = ${unitN()} N`}</text>`;
+  if (st.anim) h += `<g id="anim">${animLayer()}</g>`;
+  vad.classList.toggle('animating', !!st.anim);
   vad.innerHTML = h;
   if (hl != null) applyHL();
 }
@@ -1105,6 +1111,61 @@ function clearStaleCheck(){
   if (st.check && st.check.sig !== placedSig()) { st.check = null; $('#check').hidden = true; $('#check').innerHTML = ''; }
 }
 $('#check-btn').addEventListener('click', runCheck);
+/* ---------- Vector addition animation ----------
+   Replays the student's own, completed VAD: each arrow grows from its tail to its head in chain order, then the result is shown (ends where it started, or the gap). Nothing is shown that the student
+   hasn't already built. */
+const ANIM_GROW = 1100, ANIM_GAP = 250, ANIM_END = 1800;
+const animTotal = () => st.anim.order.length*(ANIM_GROW + ANIM_GAP) - ANIM_GAP;
+function animLayer(){
+  const a = st.anim; if (!a) return '';
+  const e = performance.now() - a.t0, per = ANIM_GROW + ANIM_GAP, arr = a.order.map(id => st.placed.get(id)), n = arr.length;
+  const ease = f => 1 - Math.pow(1 - f, 3);
+  const all = arr.flatMap(p => [P(p.x, p.y), P(...tipOf(p))]);
+  const cen = [all.reduce((s,q) => s + q[0], 0)/all.length, all.reduce((s,q) => s + q[1], 0)/all.length];
+  const away = (m, d) => { const L = Math.hypot(m[0]-cen[0], m[1]-cen[1]) || 1; return [m[0] + (m[0]-cen[0])/L*d, m[1] + (m[1]-cen[1])/L*d]; };
+  const start = P(arr[0].x, arr[0].y);
+  let h = `<circle cx="${r1(start[0])}" cy="${r1(start[1])}" r="8" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="3 3"/>`;
+  for (let i = 0; i < n; i++) {
+    const frac = e >= i*per + ANIM_GROW ? 1 : e <= i*per ? 0 : ease((e - i*per)/ANIM_GROW);
+    if (frac <= 0) break;
+    const p = arr[i], t = P(p.x, p.y), tp0 = P(...tipOf(p)), tp = [t[0] + (tp0[0]-t[0])*frac, t[1] + (tp0[1]-t[1])*frac];
+    const col = `var(--f${p.id})`;
+    if (Math.hypot(tp[0]-t[0], tp[1]-t[1]) > 3) h += arrow(t[0], t[1], tp[0], tp[1], col, 4);
+    if (frac === 1) { const m = away([(t[0]+tp0[0])/2, (t[1]+tp0[1])/2], 22); h += svgLabel(F(p.id), m[0], m[1], 'middle', 18, col); }
+  }
+  if (e >= animTotal()) {                         // the result
+    const A = analyze(), end = P(...tipOf(arr[n-1])), closed = Math.hypot(...A.sum) < CLOSE_TOL;
+    const sig = t => `<tspan>Σ</tspan><tspan font-style="italic">F</tspan><tspan> ${t} 0</tspan>`;
+    if (closed) {
+      const m = away(start, 30);
+      h += `<circle class="closed" cx="${r1(start[0])}" cy="${r1(start[1])}" r="13"/><text class="lbl ok" x="${r1(m[0])}" y="${r1(m[1])}" text-anchor="middle" dominant-baseline="middle" font-size="20">${sig('=')}</text>`;
+    } else {
+      const m = away([(start[0]+end[0])/2, (start[1]+end[1])/2], 22);
+      h += `<line x1="${r1(start[0])}" y1="${r1(start[1])}" x2="${r1(end[0])}" y2="${r1(end[1])}" stroke="var(--warn)" stroke-width="2.5" stroke-dasharray="7 6" stroke-linecap="round"/><text class="lbl gap" x="${r1(m[0])}" y="${r1(m[1])}" text-anchor="middle" dominant-baseline="middle" font-size="20">${sig('≠')}</text>`;
+    }
+  }
+  return h;
+}
+function animFrame(){
+  const a = st.anim; if (!a) return;
+  if (performance.now() - a.t0 > animTotal() + ANIM_END) { stopAnim(); return; }
+  const g = $('#anim'); if (g) g.innerHTML = animLayer();
+  a.raf = requestAnimationFrame(animFrame);
+}
+function startAnim(){
+  const total = sc().forces.length, order = st.placed.size === total ? chainOrder() : null;
+  if (!order) { showHint('Bring every force into the VAD and join them head to tail first, then the animation can play.'); return; }
+  st.anim = { order, t0:performance.now(), raf:0 };
+  $('#anim-btn').textContent = 'Stop animation';
+  renderVAD(); st.anim.raf = requestAnimationFrame(animFrame);
+}
+function stopAnim(){
+  if (!st.anim) return;
+  cancelAnimationFrame(st.anim.raf); st.anim = null;
+  $('#anim-btn').textContent = 'Show Vector Addition Animation';
+  renderVAD();
+}
+$('#anim-btn').addEventListener('click', () => st.anim ? stopAnim() : startAnim());
 function render(){ renderSketch(); renderID(); renderFBD(); renderForceKey(); renderChips(); renderVAD(); updateStatus(); applyHL(); }
 
 function showHint(text, sticky=false){
@@ -1116,6 +1177,7 @@ function clearResult(){}
 
 /* ---------- actions ---------- */
 function toggleForce(i){
+  stopAnim();
   if (st.placed.has(i)) { st.placed.delete(i); }
   else {
     const f = F(i), u = dir(f), len = known(f) ? f.mag : 2, k = st.placed.size;
@@ -1125,6 +1187,7 @@ function toggleForce(i){
   clearResult(); render();
 }
 function selectScenario(i){
+  stopAnim();
   si = i; st.placed.clear(); st.history = []; clearResult(); renderHistory(); renderScenarios(); render();
 }
 function renderHistory(){}
@@ -1134,6 +1197,7 @@ function toWorld(e){
   return [(e.clientX - rc.left - CX)/S, (CY - (e.clientY - rc.top))/S];
 }
 vad.addEventListener('pointerdown', e => {
+  if (st.anim) return;
   const g = e.target.closest('[data-id]'); if (!g) return;
   const id = +g.dataset.id, part = e.target.dataset.part || 'body';
   const now = performance.now();
@@ -1197,6 +1261,7 @@ fbd.addEventListener('keydown', e => {
   if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); toggleForce(+g.dataset.i); }
 });
 $('#rails').addEventListener('change', e => { st.rails = e.target.checked; renderVAD(); });
+$('#show-vals').addEventListener('change', e => { st.showVals = e.target.checked; $('#units').hidden = !st.showVals; renderChips(); renderVAD(); });
 document.querySelectorAll('input[name="vu"]').forEach(r => r.addEventListener('change', e => { st.unitsCm = e.target.value === 'cm'; renderVAD(); }));
 document.querySelector('.anglebar').addEventListener('change', e => {
   const t = e.target;
@@ -1204,7 +1269,7 @@ document.querySelector('.anglebar').addEventListener('change', e => {
   if (t.dataset.on) st[t.dataset.on] = t.checked;
   renderFBD(); renderVAD();
 });
-$('#restart').addEventListener('click', () => { st.placed.clear(); clearResult(); render(); });
+$('#restart').addEventListener('click', () => { stopAnim(); st.placed.clear(); clearResult(); render(); });
 new ResizeObserver(() => renderVAD()).observe(vad);
 
 renderScenarios(); render();
