@@ -256,7 +256,7 @@ const SCN = [
     target:[0,0],
     id:{ sys:"B",
       objs:{ B:{name:"Box (B)",x:70,y:85}, R:{name:"Rope (R)",x:250,y:50}, G:{name:"Ground (G)",x:180,y:165}, E:{name:"Earth (E)",x:180,y:248} },
-      ints:[{a:"R",b:"B",type:"stretch",f:1,bend:16},
+      ints:[{a:"R",b:"B",type:"extension",f:1,bend:16},
             {a:"G",b:"B",type:"compression",f:2,bend:-22},{a:"G",b:"B",type:"shear",f:3,bend:22},
             {a:"E",b:"B",type:"field",f:0,bend:-55},{a:"E",b:"G",type:"field",bend:0}] } },
   { name:"Pulling Up at an Angle", label:"BFPM 4.9 Apply The Model #2", motion:"moves at constant velocity",
@@ -266,7 +266,7 @@ const SCN = [
     target:[0,0],
     id:{ sys:"C",
       objs:{ C:{name:"Crate (C)",x:70,y:85}, R:{name:"Rope (R)",x:180,y:35}, S:{name:"Student (S)",x:292,y:85}, G:{name:"Ground (G)",x:180,y:165}, E:{name:"Earth (E)",x:180,y:248} },
-      ints:[{a:"R",b:"C",type:"stretch",f:1,bend:16},{a:"R",b:"S",type:"stretch",bend:-16},
+      ints:[{a:"R",b:"C",type:"extension",f:1,bend:16},{a:"R",b:"S",type:"extension",bend:-16},
             {a:"G",b:"C",type:"compression",f:2,bend:-22},{a:"G",b:"C",type:"shear",f:3,bend:22},
             {a:"G",b:"S",type:"compression",bend:22},{a:"G",b:"S",type:"shear",bend:-22},
             {a:"E",b:"C",type:"field",f:0,bend:-55},{a:"E",b:"S",type:"field",bend:55},{a:"E",b:"G",type:"field",bend:0}] } },
@@ -296,7 +296,7 @@ const SCN = [
     target:[0,0],
     id:{ sys:"C",
       objs:{ C:{name:"Cart (C)",x:80,y:95}, R:{name:"Rope (R)",x:270,y:35}, I:{name:"Incline (I)",x:275,y:165}, E:{name:"Earth (E)",x:130,y:240} },
-      ints:[{a:"R",b:"C",type:"stretch",f:2,bend:-18},{a:"I",b:"C",type:"compression",f:1,bend:-20},{a:"E",b:"C",type:"field",f:0,bend:-30},{a:"E",b:"I",type:"field",bend:-20}] } },
+      ints:[{a:"R",b:"C",type:"extension",f:2,bend:-18},{a:"I",b:"C",type:"compression",f:1,bend:-20},{a:"E",b:"C",type:"field",f:0,bend:-30},{a:"E",b:"I",type:"field",bend:-20}] } },
   { name:"Traffic Light", label:"BFPM 4.9 Apply The Model #6", motion:"is at rest",
     text:"A traffic light of mass 6.1 kg hangs at rest from two cables that make angles of 35° and 55° with the horizontal.",
     key:"L = traffic light, A = left cable, B = right cable, S = supports, E = Earth",
@@ -304,7 +304,7 @@ const SCN = [
     target:[0,0],
     id:{ sys:"L",
       objs:{ S:{name:"Supports (S)",x:180,y:32}, A:{name:"Left cable (A)",x:62,y:125}, E:{name:"Earth (E)",x:180,y:125}, B:{name:"Right cable (B)",x:298,y:125}, L:{name:"Light (L)",x:180,y:222} },
-      ints:[{a:"A",b:"L",type:"stretch",f:1,bend:-22},{a:"B",b:"L",type:"stretch",f:2,bend:22},{a:"S",b:"A",type:"stretch",bend:22},{a:"S",b:"B",type:"stretch",bend:-22},
+      ints:[{a:"A",b:"L",type:"extension",f:1,bend:-22},{a:"B",b:"L",type:"extension",f:2,bend:22},{a:"S",b:"A",type:"extension",bend:22},{a:"S",b:"B",type:"extension",bend:-22},
             {a:"E",b:"L",type:"field",f:0,bend:0},{a:"E",b:"S",type:"field",bend:0}] } },
   { name:"Horizontal Spring", label:"BFPM 4.9 Apply The Model #7", sq:5, motion:"moves at constant velocity",
     text:"A horizontal spring (spring constant 150 N/m) pulls on a 2.5 kg block that moves at constant velocity across a rough surface. The spring is stretched 0.04 m.",
@@ -313,7 +313,7 @@ const SCN = [
     target:[0,0],
     id:{ sys:"B",
       objs:{ B:{name:"Block (B)",x:70,y:85}, S:{name:"Spring (S)",x:250,y:50}, G:{name:"Ground (G)",x:180,y:165}, E:{name:"Earth (E)",x:180,y:248} },
-      ints:[{a:"S",b:"B",type:"stretch",f:1,bend:16},
+      ints:[{a:"S",b:"B",type:"extension",f:1,bend:16},
             {a:"G",b:"B",type:"compression",f:2,bend:-22},{a:"G",b:"B",type:"shear",f:3,bend:22},
             {a:"E",b:"B",type:"field",f:0,bend:-55},{a:"E",b:"G",type:"field",bend:0}] } },
   { name:"Book at rest on a table", label:"Scenario 1: Book at rest on a table", motion:"is at rest",
@@ -339,7 +339,7 @@ const SCN = [
     target:[0,0],
     id:{ sys:"S",
       objs:{ W:{name:"Walls (W)",x:180,y:32}, L:{name:"Left rope (L)",x:62,y:125}, E:{name:"Earth (E)",x:180,y:125}, R:{name:"Right rope (R)",x:298,y:125}, S:{name:"Sign (S)",x:180,y:222} },
-      ints:[{a:"L",b:"S",type:"stretch",f:1,bend:-22},{a:"R",b:"S",type:"stretch",f:2,bend:22},{a:"W",b:"L",type:"stretch",bend:22},{a:"W",b:"R",type:"stretch",bend:-22},
+      ints:[{a:"L",b:"S",type:"extension",f:1,bend:-22},{a:"R",b:"S",type:"extension",f:2,bend:22},{a:"W",b:"L",type:"extension",bend:22},{a:"W",b:"R",type:"extension",bend:-22},
             {a:"E",b:"S",type:"field",f:0,bend:0},{a:"E",b:"W",type:"field",bend:0}] } },
   { name:"Sled pulled at constant velocity", label:"Scenario 4: Sled pulled at constant velocity", motion:"moves at constant velocity",
     text:"You pull a 5 kg sled to the right across level snow at constant velocity. The rope pulls on the sled with 30 N at 30° above horizontal, and kinetic friction acts on it.",
@@ -348,7 +348,7 @@ const SCN = [
     target:[0,0],
     id:{ sys:"S",
       objs:{ S:{name:"Sled (S)",x:70,y:85}, R:{name:"Rope (R)",x:180,y:35}, Y:{name:"You (Y)",x:292,y:85}, G:{name:"Ground (G)",x:180,y:165}, E:{name:"Earth (E)",x:180,y:248} },
-      ints:[{a:"R",b:"S",type:"stretch",f:1,bend:16},{a:"R",b:"Y",type:"stretch",bend:-16},
+      ints:[{a:"R",b:"S",type:"extension",f:1,bend:16},{a:"R",b:"Y",type:"extension",bend:-16},
             {a:"G",b:"S",type:"compression",f:2,bend:-22},{a:"G",b:"S",type:"shear",f:3,bend:22},
             {a:"G",b:"Y",type:"compression",bend:22},{a:"G",b:"Y",type:"shear",bend:-22},
             {a:"E",b:"S",type:"field",f:0,bend:-55},{a:"E",b:"Y",type:"field",bend:55},{a:"E",b:"G",type:"field",bend:0}] } },
@@ -651,15 +651,17 @@ const SKETCH = [
     skT(82,153,'Crate (C)') + skT(158,116,'Rope (R)','sk-lbl','end') +
     skT(196,98,'30 N','sk-note','end') + skT(236,122,'Student (S)','sk-lbl','start') +
     skT(14,192,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end'),
-  // Pushing Down at an Angle
+  // Pushing Down at an Angle: student leaning over the box, arms along the 30° push line
   () => hatch(10,310,172) +
     `<rect class="sk sk-fill" x="194" y="128" width="70" height="44" rx="2"/>`+
-    `<path class="sk" style="stroke-width:3" d="M104,88L194,140"/>` + person(84, 172, [104,88]) +
+    `<circle class="sk sk-fill" cx="151.3" cy="94" r="9"/>`+
+    `<path class="sk" d="M140.3,97Q114.2,104.1 102,129.1 M102,129.1L50.9,172 M102,129.1L115,150.6L104,172 M140.3,97L194,128"/>`+
     sysBox(187, 121, 84, 51) +
-    `<path class="sk-ref" d="M104,88H152"/>` + skArc(104,88,40,0,30,'30°',64,7) +
+    `<path class="sk-ref" d="M140.3,97H188.3"/><path class="sk-ref" style="stroke-dasharray:none" d="M178.3,97 A38,38 0 0 1 173.2,116"/>`+
+    skT(198,105,'30°','sk-note') +
     motionMap(196, 58, 3, 40, 28) +
     skT(229,154,'Box (B)') +
-    skT(116,62,'40.0 N push','sk-note','start') + skT(70,40,'Student (S)','sk-lbl','end') +
+    skT(158,142,'40.0 N','sk-note') + skT(158,155,'push','sk-note') + skT(127,78,'Student (S)') +
     skT(14,192,'Ground (G)','sk-lbl','start') + skT(306,212,'Earth (E)','sk-lbl','end'),
   // Block sliding down a 20° incline at constant velocity
   () => hatch(20,300,190) +
@@ -689,7 +691,8 @@ const SKETCH = [
     `<path class="sk-ref" d="M152,150H104 M188,150H236"/>`+
     skArc(152,150,34,180,215,'35°',48) + skArc(188,150,34,-55,0,'55°',48) +
     skT(137,178,'Light (L)','sk-lbl','end') +
-    skT(95,70,'Left cable (A)') + skT(214,92,'Right cable (B)','sk-lbl','end') +
+    `<text class="sk-lbl" transform="rotate(35 92.7 96.3)" x="92.7" y="96.3" text-anchor="middle" dominant-baseline="central">Left cable (A)</text>`+
+    `<text class="sk-lbl" transform="rotate(-55 214.8 94.3)" x="214.8" y="94.3" text-anchor="middle" dominant-baseline="central">Right cable (B)</text>` +
     skT(30,214,'Supports (S)','sk-lbl','start') + skT(290,214,'Earth (E)','sk-lbl','end') +
     restMap(170, 40),
   // Horizontal spring pulling a block at constant velocity

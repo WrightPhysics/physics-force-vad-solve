@@ -73,11 +73,11 @@ Richard's rules:
 
 - Objects are ovals labeled "Name (L)".
 - Interactions are **curved lines with an arrowhead at both ends**, touching both objects, arrowheads meeting the oval **perpendicular** to its edge.
-- Each interaction is labeled **field, compression, stretch, or shear**.
+- Each interaction is labeled **field, compression, extension, or shear**.
 - The system has a **red dashed boundary**.
 - **Negligible interactions are left out entirely** (no crossed-out lines).
 - Include environment interactions too (e.g. Earth–Ground, You–Ground), not just those touching the system.
-- Each interaction crossing the boundary is exactly one FBD force: field → g, compression → N (or P for a push), stretch → T, shear → f. Crossing interactions are drawn in their force's color; others are gray.
+- Each interaction crossing the boundary is exactly one FBD force: field → g, compression → N (or P for a push), extension → T, shear → f. Crossing interactions are drawn in their force's color; others are gray.
 - Hovering/tapping any interaction, FBD arrow, VAD arrow, or chip highlights that force everywhere (`data-f` attributes + `applyHL()`).
 
 ## Arrows: the `wright vector` style
